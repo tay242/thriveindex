@@ -1,0 +1,51 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "server",
+    "db",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://3ExbsU5gLTY7Wra.root:TCb0dkj4OW2Nlg7D7MN1@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/FwgGeRMdZPSEprSrdYMS6j?ssl={\"rejectUnauthorized\":true}"
+  },
+  "experiments": [
+    "no_db_push"
+  ],
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663662257214/FwgGeRMdZPSEprSrdYMS6j",
+    "access_key_id": "ASIAZV3A2ECZHHQPQKBV",
+    "secret_access_key": "hfQoNK9sgE09cobzuNdAOWCJ1liSGWmeQTOIsP/E",
+    "session_token": "IQoJb3JpZ2luX2VjEKX//////////wEaCXVzLWVhc3QtMSJIMEYCIQCdmWkISCwAqIaSp2rlG7d4XMwo1QqEQ/4uic7hfZXcAAIhAKm2MZrUQvVo52UhtBIzL+IShtZtklemCwlPbA/85eWeKvYDCG0QBBoMNjY1Mzg2MDk4ODY2Igyu3Xfanvf8FPmaN1cq0wO923ouNA4KwsI/pwrf3oXYGd13hKgDng5ooTpiY3zmZ4mqzgegL8AFNV0HjP9Vvbx5ZTFdsozKOK7k1xTT71nY/qhgsGeYy9s5XXnTUGJNMDguCBQqH5/3O3ge3cVoV8dxwhuPR5IPVBBSwGhs+inI0iAHODakKJC8INHtgrXTSy7Bac47VcxktNaMB6udnTmFZqNWGnNVYv7U9XXrz2KgpKoFIA49lYUwXwPTMUR1+dVLojmAlknBoum/0B/7o2nIZBech55ht45rReFfxNX79gp2Am3UFti4yUQmKrGyqVm9e7cLzyf7rucsHs7FPELMFM7lMNTKveGds0COPHbeJUFJFXhGBlJyM3Vy3BnJic0CRs69C3AFzmkQ+iuyFwVnTRi0dVZYifKUO0V8882EB4/uACaaUqKorfTddbJXQ8yEeuUTUMeArU/sx3hNbXnML1GAbeMALaYr+WHnEmA6Kc3a2nriJOdTygDshgZFX7ZATrLo8irbKncCpSehcwg3DACmo+2NXQ4ip10o99BItFY+L+BcEZauJeZPtPxVNH1RJGR4z42cKmm2VyHHeYZDXQq20+zoRMWyz2WmpiZq+tIuT39zaY2vdm0Z2m2P9Mr+hDC/vprQBjqcAQHJRSIuB2s30gOwdrMj+DCtP4WD+QALP8UTudgBkzT6+cgUEp6mjarqbjP531QfBl1XlQRnvQTaU4o8PE1LB5WotltCmuWrV601lpprAqDMcGGvY3uqIAFEAiHaKfi4Bq7zCQ5qzguJy6l4FEXfGpLI86oKm1rhXsV9J3LhPan2QCboGJFfMshq6mW/bbkfJEPd1qFXbtNEOMMxwQ==",
+    "expiration": "2026-05-15T16:21:19.000Z"
+  },
+  "name": "thriveindex",
+  "path": "/home/ubuntu/thriveindex",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "P5t8jNAJwXAg7CM8UKB6gV",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "EXPO_APP_QR_URL": "exps://8081-icfos0bzy38wwyrzrfq8a-b6f579ad.us2.manus.computer",
+    "EXPO_PACKAGER_PROXY_URL": "https://8081-icfos0bzy38wwyrzrfq8a-b6f579ad.us2.manus.computer",
+    "EXPO_PUBLIC_API_BASE_URL": "https://3000-icfos0bzy38wwyrzrfq8a-b6f579ad.us2.manus.computer",
+    "EXPO_PUBLIC_OAUTH_PORTAL_URL": "https://manus.im",
+    "EXPO_PUBLIC_OAUTH_SERVER_URL": "https://api.manus.im",
+    "EXPO_PUBLIC_OWNER_NAME": "Taylor  Stevens",
+    "EXPO_PUBLIC_OWNER_OPEN_ID": "R9MvBr52C4RgiByBxVkaBV",
+    "JWT_SECRET": "5R9vi9BZbWmJhgz2t6ukCb",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Taylor  Stevens",
+    "OWNER_OPEN_ID": "R9MvBr52C4RgiByBxVkaBV",
+    "REACT_NATIVE_PACKAGER_HOSTNAME": "8081-icfos0bzy38wwyrzrfq8a-b6f579ad.us2.manus.computer",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "3de3b13d-fcad-411f-b38a-84e86e48761f",
+    "VITE_APP_ID": "FwgGeRMdZPSEprSrdYMS6j",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "ThriveIndex",
+    "VITE_FRONTEND_FORGE_API_KEY": "WmPtntK6rPrCfoAWQiPL5o",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "app",
+  "test_command": "pnpm test"
+}

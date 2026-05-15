@@ -15,7 +15,7 @@ export interface DailyEntry {
   steps: number;
   exerciseMinutes: number;
   // Manual reflections
-  gratitude: string;
+  gratitude: string | string[]; // Support both old single string and new array format
   progressNote: string;
   progressCategory: ProgressCategory | null;
   morningSunlight: boolean | null;
@@ -188,7 +188,13 @@ export function calculateDailyScore(entry: Partial<DailyEntry>, thresholds: Thre
   if (entry.morningSunlight === true) score += 10;
 
   // Gratitude: 10 pts
-  if (entry.gratitude && entry.gratitude.trim().length > 0) score += 10;
+  if (entry.gratitude) {
+    if (Array.isArray(entry.gratitude)) {
+      if (entry.gratitude.some(g => g.trim().length > 0)) score += 10;
+    } else if (entry.gratitude.trim().length > 0) {
+      score += 10;
+    }
+  }
 
   // Progress note: 10 pts
   if (entry.progressNote && entry.progressNote.trim().length > 0) score += 10;

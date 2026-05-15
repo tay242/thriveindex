@@ -250,7 +250,11 @@ export default function InsightsScreen() {
     }
 
     // Gratitude
-    const gratitudeDays = last14.filter((e) => e.gratitude && e.gratitude.trim().length > 0);
+    const gratitudeDays = last14.filter((e) => {
+      if (!e.gratitude) return false;
+      if (Array.isArray(e.gratitude)) return e.gratitude.some(g => g.trim().length > 0);
+      return e.gratitude.trim().length > 0;
+    });
     if (gratitudeDays.length >= 4) {
       result.push(`You've logged gratitude on ${gratitudeDays.length} of the last 14 days — consistency here is associated with reduced negative attentional bias.`);
     }

@@ -90,3 +90,9 @@
 - [x] Fix button styling with better visual prominence (shadow, padding)
 - [x] Enhance micro-interactions (button feedback, animations)
 - [x] Test onboarding flow end-to-end
+
+## Multiple Good Things Feature
+- [x] Add multiple good things logging on Today screen
+- [x] Implement "Add Another" button to add more items
+- [x] Add confetti celebration when 3+ items added
+- [x] Test confetti animation on native and web

@@ -15,6 +15,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { StreakCelebration } from '@/components/streak-celebration';
 import { SyncStatusBadge } from '@/components/sync-status-badge';
 import { ExtraMetricsCard } from '@/components/extra-metrics-card';
+import { ConfettiCelebration } from '@/components/confetti-celebration';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
 import { useHealthKit } from '@/hooks/use-health-kit';
@@ -141,7 +142,14 @@ export default function TodayScreen() {
   const colors = useColors();
   const { profile, todayEntry, updateTodayEntry, streakCelebration, setStreakCelebration, isOnline, hasPendingSync } = useApp();
   const { data: healthData, loading: healthLoading, fetchTodayData, authorized: healthAuthorized } = useHealthKit();
-  const [gratitude, setGratitude] = useState(todayEntry?.gratitude ?? '');
+  const initGratitudes = (() => {
+    const g = todayEntry?.gratitude;
+    if (Array.isArray(g)) return g;
+    if (typeof g === 'string' && g.trim()) return [g];
+    return [''];
+  })();
+
+  const [gratitudes, setGratitudes] = useState<string[]>(initGratitudes);
   const [progressNote, setProgressNote] = useState(todayEntry?.progressNote ?? '');
   const [selectedCategory, setSelectedCategory] = useState<ProgressCategory | null>(
     todayEntry?.progressCategory ?? null
@@ -149,6 +157,7 @@ export default function TodayScreen() {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [saving, setSaving] = useState(false);
   const [extraMetrics, setExtraMetrics] = useState(todayEntry?.extraMetrics ?? []);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const today = todayString();
   const score = todayEntry?.dailyScore ?? 0;
@@ -183,13 +192,33 @@ export default function TodayScreen() {
   const handleSaveReflection = async () => {
     if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setSaving(true);
+    const filledGratitudes = gratitudes.filter((g) => g.trim());
+    if (filledGratitudes.length >= 3) {
+      setShowConfetti(true);
+    }
     await updateTodayEntry({
-      gratitude,
+      gratitude: filledGratitudes.length > 0 ? filledGratitudes : '',
       progressNote,
       progressCategory: selectedCategory,
       extraMetrics,
     });
     setSaving(false);
+  };
+
+  const addGratitude = () => {
+    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setGratitudes([...gratitudes, '']);
+  };
+
+  const removeGratitude = (index: number) => {
+    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setGratitudes(gratitudes.filter((_, i) => i !== index));
+  };
+
+  const updateGratitude = (index: number, value: string) => {
+    const updated = [...gratitudes];
+    updated[index] = value;
+    setGratitudes(updated);
   };
 
   const getGreeting = () => {
@@ -215,6 +244,10 @@ export default function TodayScreen() {
         streak={streakCelebration.streak}
         onClose={() => setStreakCelebration({ visible: false, streak: 0 })}
         colors={colors}
+      />
+      <ConfettiCelebration
+        isVisible={showConfetti}
+        onComplete={() => setShowConfetti(false)}
       />
       <ScreenContainer containerClassName="bg-background">
       <ScrollView
@@ -376,22 +409,58 @@ export default function TodayScreen() {
         {/* Evening Reflection */}
         <Text style={s.sectionTitle}>Evening Reflection</Text>
 
-        {/* Gratitude */}
+        {/* Multiple Good Things */}
         <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-            <IconSymbol name="sparkles" size={18} color={colors.primary} />
-            <Text style={[s.cardTitle, { color: colors.foreground }]}>What's something good from today?</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <IconSymbol name="sparkles" size={18} color={colors.primary} />
+              <Text style={[s.cardTitle, { color: colors.foreground }]}>Good things from today</Text>
+            </View>
+            <Text style={{ fontSize: 12, color: colors.muted, fontWeight: '600' }}>{gratitudes.filter(g => g.trim()).length}</Text>
           </View>
-          <TextInput
-            value={gratitude}
-            onChangeText={setGratitude}
-            placeholder="A small win, a moment, anything..."
-            placeholderTextColor={colors.muted}
-            multiline
-            numberOfLines={3}
-            style={[s.textInput, { color: colors.foreground, borderColor: colors.border }]}
-            textAlignVertical="top"
-          />
+          <View style={{ gap: 10 }}>
+            {gratitudes.map((gratitude, index) => (
+              <View key={index} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 8 }}>
+                <TextInput
+                  value={gratitude}
+                  onChangeText={(text) => updateGratitude(index, text)}
+                  placeholder={`Good thing ${index + 1}...`}
+                  placeholderTextColor={colors.muted}
+                  multiline
+                  numberOfLines={2}
+                  style={[s.textInput, { color: colors.foreground, borderColor: colors.border, flex: 1 }]}
+                  textAlignVertical="top"
+                />
+                {gratitudes.length > 1 && (
+                  <Pressable
+                    style={({ pressed }) => [{ paddingTop: 10 }, pressed && { opacity: 0.6 }]}
+                    onPress={() => removeGratitude(index)}
+                  >
+                    <IconSymbol name="xmark.circle.fill" size={20} color={colors.error} />
+                  </Pressable>
+                )}
+              </View>
+            ))}
+          </View>
+          <Pressable
+            style={({ pressed }) => [{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+              marginTop: 12,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+              borderRadius: 8,
+              borderWidth: 1.5,
+              borderColor: colors.primary,
+              borderStyle: 'dashed',
+            }, pressed && { opacity: 0.7 }]}
+            onPress={addGratitude}
+          >
+            <IconSymbol name="plus.circle.fill" size={16} color={colors.primary} />
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.primary }}>Add another</Text>
+          </Pressable>
         </View>
 
         {/* Progress */}

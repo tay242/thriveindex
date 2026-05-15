@@ -227,12 +227,15 @@ export default function ProfileScreen() {
             </View>
           </Pressable>
 
-          <Pressable
-            style={({ pressed }) => [
-              { flex: 1, backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 12, padding: 12 },
-              pressed && { opacity: 0.7 },
-            ]}
-            onPress={() => router.push('/(tabs)/extra-metrics-settings')}
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+              borderWidth: 1,
+              borderRadius: 12,
+              padding: 12,
+            }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
               <IconSymbol name="plus.circle.fill" size={20} color={colors.primary} />
@@ -241,7 +244,7 @@ export default function ProfileScreen() {
                 <Text style={{ fontSize: 11, color: colors.muted, marginTop: 2 }}>{profile.enabledExtraMetrics.length} enabled</Text>
               </View>
             </View>
-          </Pressable>
+          </View>
         </View>
 
         {/* Thresholds */}

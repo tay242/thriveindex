@@ -137,7 +137,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   );
 
   const completeOnboarding = useCallback(async (name: string) => {
-    await saveProfile({ onboardingComplete: true, name });
+    // Generate a unique referral code for the user
+    const referralCode = `THRIVE-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    await saveProfile({ onboardingComplete: true, name, referralCode });
     await seedDemoData(DEFAULT_PROFILE.thresholds);
     await requestPermissions();
     await scheduleMorningReminder();

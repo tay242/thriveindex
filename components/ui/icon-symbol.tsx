@@ -61,6 +61,10 @@ const MAPPING = {
   "globe": "language",
   "book.fill": "menu-book",
   "flask.fill": "science",
+  "square.and.arrow.up": "share",
+  "doc.on.doc": "content-copy",
+  "plus.circle.fill": "add-circle",
+  "calendar.badge.fill": "event-note",
 } as IconMapping;
 
 export function IconSymbol({

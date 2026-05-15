@@ -16,6 +16,8 @@ import { useApp } from '@/lib/app-context';
 import { DEFAULT_THRESHOLDS } from '@/lib/store';
 import { CORE_METRICS_SCIENCE, EXTRA_METRICS_PRESETS } from '@/lib/science';
 import * as Haptics from 'expo-haptics';
+import * as Clipboard from 'expo-clipboard';
+import * as Sharing from 'expo-sharing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ─── Milestone definitions ────────────────────────────────────────────────────
@@ -398,6 +400,75 @@ export default function ProfileScreen() {
             ]}
           >
             <Text style={s.saveBtnText}>Start Free Trial</Text>
+          </Pressable>
+        </View>
+
+        {/* Share ThriveIndex */}
+        <Text style={s.sectionTitle}>Share & Earn</Text>
+        <View style={[s.card, { backgroundColor: colors.primary + '10', borderColor: colors.primary + '30' }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+            <IconSymbol name="square.and.arrow.up" size={22} color={colors.primary} />
+            <Text style={{ fontSize: 17, fontWeight: '700', color: colors.foreground }}>
+              Share ThriveIndex
+            </Text>
+          </View>
+          <Text style={{ fontSize: 14, color: colors.muted, lineHeight: 22, marginBottom: 16 }}>
+            Invite friends and earn rewards. For each friend who signs up with your code, you both get 7 bonus trial days.
+          </Text>
+          <View style={{ backgroundColor: colors.background, borderRadius: 12, padding: 12, marginBottom: 16, borderWidth: 1, borderColor: colors.border }}>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 6, fontWeight: '600' }}>Your Referral Code</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text style={{ fontSize: 16, fontWeight: '700', color: colors.primary, flex: 1 }}>
+                {profile.referralCode || 'Loading...'}
+              </Text>
+              <Pressable
+                style={({ pressed }) => [{
+                  paddingHorizontal: 12,
+                  paddingVertical: 8,
+                  borderRadius: 8,
+                  backgroundColor: colors.primary,
+                }, pressed && { opacity: 0.8 }]}
+                onPress={async () => {
+                  if (profile.referralCode) {
+                    await Clipboard.setStringAsync(profile.referralCode);
+                    if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    Alert.alert('Copied!', 'Referral code copied to clipboard');
+                  }
+                }}
+              >
+                <IconSymbol name="doc.on.doc" size={16} color="#fff" />
+              </Pressable>
+            </View>
+          </View>
+          <View style={{ gap: 8, marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="person.2.fill" size={16} color={colors.primary} />
+              <Text style={{ fontSize: 14, color: colors.foreground }}>Referrals: {profile.referralsCount}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="calendar" size={16} color={colors.primary} />
+              <Text style={{ fontSize: 14, color: colors.foreground }}>Bonus Days: {profile.referralRewardDays}</Text>
+            </View>
+          </View>
+          <Pressable
+            style={({ pressed }) => [{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 14,
+              borderRadius: 12,
+              backgroundColor: colors.primary,
+            }, pressed && { opacity: 0.85 }]}
+            onPress={async () => {
+              const message = `Join me on ThriveIndex! Use code ${profile.referralCode} to get 7 bonus trial days. Let's build better wellbeing habits together. 🌱`;
+              if (Platform.OS !== 'web' && await Sharing.isAvailableAsync()) {
+                await Sharing.shareAsync(message);
+              } else {
+                await Clipboard.setStringAsync(message);
+                Alert.alert('Message copied', 'Share this with your friends');
+              }
+            }}
+          >
+            <Text style={s.saveBtnText}>Share with Friends</Text>
           </Pressable>
         </View>
 

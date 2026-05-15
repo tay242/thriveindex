@@ -60,5 +60,6 @@
 - [x] Add weekly notification day/time picker to onboarding
 - [x] Add notification settings to Profile screen (update daily/weekly times)
 - [x] Update subscription messaging to emphasize supporting the team
+- [x] Add referral system with Share card in Profile
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

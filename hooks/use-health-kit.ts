@@ -15,11 +15,11 @@ export interface HealthData {
   lastSyncTime: string;
 }
 
-const PERMISSIONS = [
+const PERMISSIONS = Health ? [
   Health.HKQuantityTypeIdentifier.stepCount,
   Health.HKQuantityTypeIdentifier.sleepAnalysis,
   Health.HKWorkoutTypeIdentifier.workout,
-];
+] : [];
 
 /**
  * Hook to read HealthKit data from Apple Health on iOS.
@@ -45,7 +45,7 @@ export function useHealthKit() {
 
     try {
       setLoading(true);
-      const result = await Health.requestPermissions(PERMISSIONS);
+      const result = await Health.requestPermissions(PERMISSIONS || []);
       setAuthorized(result);
       setError(null);
     } catch (err) {
@@ -70,7 +70,7 @@ export function useHealthKit() {
 
       // Fetch steps
       const stepsData = await Health.getHKQuantitySampleData(
-        Health.HKQuantityTypeIdentifier.stepCount,
+        Health?.HKQuantityTypeIdentifier?.stepCount,
         {
           startDate: startOfDay,
           endDate: now,
@@ -83,7 +83,7 @@ export function useHealthKit() {
 
       // Fetch sleep (in minutes, convert to hours)
       const sleepData = await Health.getHKQuantitySampleData(
-        Health.HKQuantityTypeIdentifier.sleepAnalysis,
+        Health?.HKQuantityTypeIdentifier?.sleepAnalysis,
         {
           startDate: startOfDay,
           endDate: now,

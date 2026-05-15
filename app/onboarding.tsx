@@ -21,7 +21,7 @@ import * as Haptics from 'expo-haptics';
 
 const { width } = Dimensions.get('window');
 
-const STEPS = ['welcome', 'philosophy', 'name', 'health', 'thresholds', 'priorities'] as const;
+const STEPS = ['welcome', 'philosophy', 'name', 'health', 'thresholds', 'priorities', 'dailyNotification', 'weeklyNotification'] as const;
 type Step = (typeof STEPS)[number];
 
 const ALL_PRIORITIES: ProgressCategory[] = [
@@ -40,6 +40,9 @@ export default function OnboardingScreen() {
   const [name, setName] = useState('');
   const [thresholds, setThresholds] = useState(DEFAULT_THRESHOLDS);
   const [priorities, setPriorities] = useState<ProgressCategory[]>(['Health', 'Personal Growth']);
+  const [dailyNotificationTime, setDailyNotificationTime] = useState('21:00');
+  const [weeklyNotificationDay, setWeeklyNotificationDay] = useState(0);
+  const [weeklyNotificationTime, setWeeklyNotificationTime] = useState('09:00');
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
   const stepIndex = STEPS.indexOf(step);
@@ -68,7 +71,7 @@ export default function OnboardingScreen() {
 
   const handleFinish = async () => {
     if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    await updateProfile({ thresholds, priorities });
+    await updateProfile({ thresholds, priorities, dailyNotificationTime, weeklyNotificationDay, weeklyNotificationTime });
     await completeOnboarding(name || 'Friend');
   };
 
@@ -119,6 +122,22 @@ export default function OnboardingScreen() {
                 allPriorities={ALL_PRIORITIES}
               />
             )}
+            {step === 'dailyNotification' && (
+              <DailyNotificationStep
+                colors={colors}
+                time={dailyNotificationTime}
+                setTime={setDailyNotificationTime}
+              />
+            )}
+            {step === 'weeklyNotification' && (
+              <WeeklyNotificationStep
+                colors={colors}
+                day={weeklyNotificationDay}
+                setDay={setWeeklyNotificationDay}
+                time={weeklyNotificationTime}
+                setTime={setWeeklyNotificationTime}
+              />
+            )}
           </ScrollView>
         </Animated.View>
 
@@ -133,7 +152,7 @@ export default function OnboardingScreen() {
             <View style={{ flex: 1 }} />
           )}
 
-          {step !== 'priorities' ? (
+          {step !== 'weeklyNotification' ? (
             <Pressable
               style={({ pressed }) => [s.nextBtn, { backgroundColor: colors.primary }, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
               onPress={goNext}
@@ -529,3 +548,249 @@ const styles = (colors: any) =>
       fontWeight: '600',
     },
   });
+
+// ─── Daily Notification Step ──────────────────────────────────────────────────
+
+function DailyNotificationStep({
+  colors,
+  time,
+  setTime,
+}: {
+  colors: any;
+  time: string;
+  setTime: (t: string) => void;
+}) {
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const minutes = [0, 15, 30, 45];
+
+  const [hour, minute] = time.split(':').map(Number);
+
+  return (
+    <View>
+      <Text style={{ fontSize: 28, fontWeight: '700', color: colors.foreground, marginBottom: 8 }}>
+        Daily Reminder
+      </Text>
+      <Text style={{ fontSize: 16, color: colors.muted, lineHeight: 24, marginBottom: 24 }}>
+        What time would you like to receive your daily reminder to complete your evening reflection?
+      </Text>
+
+      <View style={{ gap: 16 }}>
+        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Hour</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: 8 }}
+            >
+              {hours.map((h) => (
+                <Pressable
+                  key={h}
+                  style={({ pressed }) => [
+                    {
+                      paddingHorizontal: 16,
+                      paddingVertical: 12,
+                      borderRadius: 10,
+                      backgroundColor: h === hour ? colors.primary : colors.surface,
+                      borderWidth: 1,
+                      borderColor: h === hour ? colors.primary : colors.border,
+                      minWidth: 60,
+                      alignItems: 'center',
+                    },
+                    pressed && { opacity: 0.8 },
+                  ]}
+                  onPress={() => setTime(`${String(h).padStart(2, '0')}:${String(minute).padStart(2, '0')}`)}
+                >
+                  <Text style={{ fontSize: 16, fontWeight: '600', color: h === hour ? '#fff' : colors.foreground }}>
+                    {String(h).padStart(2, '0')}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Minute</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: 8 }}
+            >
+              {minutes.map((m) => (
+                <Pressable
+                  key={m}
+                  style={({ pressed }) => [
+                    {
+                      paddingHorizontal: 16,
+                      paddingVertical: 12,
+                      borderRadius: 10,
+                      backgroundColor: m === minute ? colors.primary : colors.surface,
+                      borderWidth: 1,
+                      borderColor: m === minute ? colors.primary : colors.border,
+                      minWidth: 60,
+                      alignItems: 'center',
+                    },
+                    pressed && { opacity: 0.8 },
+                  ]}
+                  onPress={() => setTime(`${String(hour).padStart(2, '0')}:${String(m).padStart(2, '0')}`)}
+                >
+                  <Text style={{ fontSize: 16, fontWeight: '600', color: m === minute ? '#fff' : colors.foreground }}>
+                    {String(m).padStart(2, '0')}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+
+        <View style={{ backgroundColor: colors.surface, borderRadius: 12, padding: 16, marginTop: 8 }}>
+          <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground, marginBottom: 4 }}>
+            Selected Time
+          </Text>
+          <Text style={{ fontSize: 24, fontWeight: '700', color: colors.primary }}>
+            {String(hour).padStart(2, '0')}:{String(minute).padStart(2, '0')}
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+// ─── Weekly Notification Step ─────────────────────────────────────────────────
+
+function WeeklyNotificationStep({
+  colors,
+  day,
+  setDay,
+  time,
+  setTime,
+}: {
+  colors: any;
+  day: number;
+  setDay: (d: number) => void;
+  time: string;
+  setTime: (t: string) => void;
+}) {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const minutes = [0, 15, 30, 45];
+
+  const [hour, minute] = time.split(':').map(Number);
+
+  return (
+    <View>
+      <Text style={{ fontSize: 28, fontWeight: '700', color: colors.foreground, marginBottom: 8 }}>
+        Weekly Reminder
+      </Text>
+      <Text style={{ fontSize: 16, color: colors.muted, lineHeight: 24, marginBottom: 24 }}>
+        When would you like to receive your weekly reminder to complete your weekly check-in?
+      </Text>
+
+      <View style={{ gap: 16 }}>
+        <View>
+          <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Day</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            {days.map((d, i) => (
+              <Pressable
+                key={i}
+                style={({ pressed }) => [
+                  {
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    borderRadius: 10,
+                    backgroundColor: i === day ? colors.primary : colors.surface,
+                    borderWidth: 1,
+                    borderColor: i === day ? colors.primary : colors.border,
+                  },
+                  pressed && { opacity: 0.8 },
+                ]}
+                onPress={() => setDay(i)}
+              >
+                <Text style={{ fontSize: 14, fontWeight: '600', color: i === day ? '#fff' : colors.foreground }}>
+                  {d}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+
+        <View>
+          <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Hour</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 8 }}
+          >
+            {hours.map((h) => (
+              <Pressable
+                key={h}
+                style={({ pressed }) => [
+                  {
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    borderRadius: 10,
+                    backgroundColor: h === hour ? colors.primary : colors.surface,
+                    borderWidth: 1,
+                    borderColor: h === hour ? colors.primary : colors.border,
+                    minWidth: 60,
+                    alignItems: 'center',
+                  },
+                  pressed && { opacity: 0.8 },
+                ]}
+                onPress={() => setTime(`${String(h).padStart(2, '0')}:${String(minute).padStart(2, '0')}`)}
+              >
+                <Text style={{ fontSize: 16, fontWeight: '600', color: h === hour ? '#fff' : colors.foreground }}>
+                  {String(h).padStart(2, '0')}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View>
+          <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Minute</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 8 }}
+          >
+            {minutes.map((m) => (
+              <Pressable
+                key={m}
+                style={({ pressed }) => [
+                  {
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    borderRadius: 10,
+                    backgroundColor: m === minute ? colors.primary : colors.surface,
+                    borderWidth: 1,
+                    borderColor: m === minute ? colors.primary : colors.border,
+                    minWidth: 60,
+                    alignItems: 'center',
+                  },
+                  pressed && { opacity: 0.8 },
+                ]}
+                onPress={() => setTime(`${String(hour).padStart(2, '0')}:${String(m).padStart(2, '0')}`)}
+              >
+                <Text style={{ fontSize: 16, fontWeight: '600', color: m === minute ? '#fff' : colors.foreground }}>
+                  {String(m).padStart(2, '0')}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View style={{ backgroundColor: colors.surface, borderRadius: 12, padding: 16, marginTop: 8 }}>
+          <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground, marginBottom: 4 }}>
+            Selected Time
+          </Text>
+          <Text style={{ fontSize: 20, fontWeight: '700', color: colors.primary }}>
+            {days[day]} at {String(hour).padStart(2, '0')}:{String(minute).padStart(2, '0')}
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+}

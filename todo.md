@@ -56,5 +56,7 @@
 - [x] Removed standalone Science and Extra Metrics sections
 - [x] Added icon mappings for book.fill and flask.fill
 - [x] Add toggle switches for extra metrics in Profile section
+- [x] Add daily notification time picker to onboarding
+- [x] Add weekly notification day/time picker to onboarding
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

@@ -62,6 +62,10 @@ export interface UserProfile {
   longestStreak: number;
   totalDaysTracked: number;
   joinedDate: string;
+  // Notification preferences
+  dailyNotificationTime: string; // HH:MM format (e.g., "21:00" for 9 PM)
+  weeklyNotificationDay: number; // 0 = Sunday, 6 = Saturday
+  weeklyNotificationTime: string; // HH:MM format
 }
 
 export type ProgressCategory =
@@ -101,6 +105,9 @@ export const DEFAULT_PROFILE: UserProfile = {
   longestStreak: 0,
   totalDaysTracked: 0,
   joinedDate: new Date().toISOString().split('T')[0],
+  dailyNotificationTime: '21:00',
+  weeklyNotificationDay: 0,
+  weeklyNotificationTime: '09:00',
 };
 
 // ─── Score Calculation ────────────────────────────────────────────────────────

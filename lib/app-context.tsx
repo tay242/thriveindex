@@ -28,6 +28,8 @@ interface AppContextValue {
   allDailyEntries: DailyEntry[];
   allWeeklyEntries: WeeklyEntry[];
   isLoading: boolean;
+  streakCelebration: { visible: boolean; streak: number };
+  setStreakCelebration: (state: { visible: boolean; streak: number }) => void;
   updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
   updateTodayEntry: (updates: Partial<DailyEntry>) => Promise<void>;
   updateWeekEntry: (updates: Partial<WeeklyEntry>) => Promise<void>;
@@ -44,6 +46,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [allDailyEntries, setAllDailyEntries] = useState<DailyEntry[]>([]);
   const [allWeeklyEntries, setAllWeeklyEntries] = useState<WeeklyEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [streakCelebration, setStreakCelebration] = useState({ visible: false, streak: 0 });
   const { requestPermissions, scheduleMorningReminder } = useNotifications();
 
   const loadData = useCallback(async () => {
@@ -163,6 +166,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         allDailyEntries,
         allWeeklyEntries,
         isLoading,
+        streakCelebration,
+        setStreakCelebration,
         updateProfile,
         updateTodayEntry,
         updateWeekEntry,

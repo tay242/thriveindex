@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { ScreenContainer } from '@/components/screen-container';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { StreakCelebration } from '@/components/streak-celebration';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
 import { useHealthKit } from '@/hooks/use-health-kit';
@@ -136,7 +137,7 @@ const metricStyles = StyleSheet.create({
 
 export default function TodayScreen() {
   const colors = useColors();
-  const { profile, todayEntry, updateTodayEntry } = useApp();
+  const { profile, todayEntry, updateTodayEntry, streakCelebration, setStreakCelebration } = useApp();
   const { data: healthData, loading: healthLoading, fetchTodayData, authorized: healthAuthorized } = useHealthKit();
   const [gratitude, setGratitude] = useState(todayEntry?.gratitude ?? '');
   const [progressNote, setProgressNote] = useState(todayEntry?.progressNote ?? '');
@@ -194,10 +195,24 @@ export default function TodayScreen() {
     return 'Good evening';
   };
 
+  // Check for streak milestones
+  useEffect(() => {
+    if (profile.streak > 0 && (profile.streak === 7 || profile.streak === 30 || profile.streak === 100)) {
+      setStreakCelebration({ visible: true, streak: profile.streak });
+    }
+  }, [profile.streak]);
+
   const s = styles(colors);
 
   return (
-    <ScreenContainer containerClassName="bg-background">
+    <>
+      <StreakCelebration
+        visible={streakCelebration.visible}
+        streak={streakCelebration.streak}
+        onClose={() => setStreakCelebration({ visible: false, streak: 0 })}
+        colors={colors}
+      />
+      <ScreenContainer containerClassName="bg-background">
       <ScrollView
         contentContainerStyle={s.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -450,6 +465,7 @@ export default function TodayScreen() {
         </Pressable>
       </Modal>
     </ScreenContainer>
+    </>
   );
 }
 

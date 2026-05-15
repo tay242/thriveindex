@@ -314,6 +314,52 @@ export default function ProfileScreen() {
           />
         </View>
 
+        {/* Weekly Email Digest */}
+        <Text style={s.sectionTitle}>Weekly Digest</Text>
+        <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 14 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, fontWeight: '600', color: colors.foreground, marginBottom: 4 }}>
+                Weekly Summary Email
+              </Text>
+              <Text style={{ fontSize: 13, color: colors.muted }}>
+                Get personalized insights every Sunday
+              </Text>
+            </View>
+            <Pressable
+              style={({ pressed }) => [{
+                width: 50,
+                height: 28,
+                borderRadius: 14,
+                backgroundColor: profile.weeklyEmailEnabled ? colors.primary : colors.border,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }, pressed && { opacity: 0.8 }]}
+              onPress={() => {
+                if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                updateProfile({ weeklyEmailEnabled: !profile.weeklyEmailEnabled });
+              }}
+            >
+              <View style={[{
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                backgroundColor: colors.background,
+              }, profile.weeklyEmailEnabled ? { marginLeft: 2 } : { marginRight: 2 }]} />
+            </Pressable>
+          </View>
+          {profile.weeklyEmailEnabled && (
+            <>
+              <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
+              <View style={{ paddingHorizontal: 16, paddingVertical: 12 }}>
+                <Text style={{ fontSize: 13, color: colors.muted, lineHeight: 20 }}>
+                  📧 Receive a personalized summary every Sunday at 9 AM with your weekly performance, top habits, and behavioral insights.
+                </Text>
+              </View>
+            </>
+          )}
+        </View>
+
         {/* Thresholds */}
         <Text style={s.sectionTitle}>Targets & Thresholds</Text>
         <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>

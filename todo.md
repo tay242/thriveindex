@@ -63,5 +63,8 @@
 - [x] Add referral system with Share card in Profile
 - [x] Add "Why ThriveIndex?" screen to onboarding (philosophy + differentiation)
 - [x] Add "Sample Day" walkthrough screen to onboarding
+- [x] Streak celebration animation (7-day, 30-day milestones with confetti)
+- [x] Weekly digest email toggle in Profile
+- [x] Personalized weekly email with summary, top habits, and insights
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

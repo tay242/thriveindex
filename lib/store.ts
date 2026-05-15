@@ -66,6 +66,7 @@ export interface UserProfile {
   dailyNotificationTime: string; // HH:MM format (e.g., "21:00" for 9 PM)
   weeklyNotificationDay: number; // 0 = Sunday, 6 = Saturday
   weeklyNotificationTime: string; // HH:MM format
+  weeklyEmailEnabled: boolean; // Whether to send weekly digest emails
   // Referral system
   referralCode: string; // Unique code for this user
   referralsCount: number; // Number of successful referrals
@@ -112,6 +113,7 @@ export const DEFAULT_PROFILE: UserProfile = {
   dailyNotificationTime: '21:00',
   weeklyNotificationDay: 0,
   weeklyNotificationTime: '09:00',
+  weeklyEmailEnabled: true,
   referralCode: '',
   referralsCount: 0,
   referralRewardDays: 0,

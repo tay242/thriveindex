@@ -565,6 +565,71 @@ export default function ProfileScreen() {
           </Pressable>
         </View>
 
+        {/* Referral Tiers & Lifetime Purchase */}
+        <Text style={s.sectionTitle}>Referral Rewards & Pricing</Text>
+        <View style={[s.card, { backgroundColor: colors.primary + '10', borderColor: colors.primary + '30' }]}>
+          <View style={{ marginBottom: 16 }}>
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground, marginBottom: 8 }}>Referral Tier Status</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="star.fill" size={18} color={colors.primary} />
+              <Text style={{ fontSize: 14, color: colors.muted }}>
+                {profile.referralTier === 'none' && `${profile.referralsCount} referrals (5 needed for 1 month free)`}
+                {profile.referralTier === 'tier1' && `Tier 1: 1 Month Free Unlocked! (10 more for lifetime discount)`}
+                {profile.referralTier === 'tier2' && `Tier 2: Lifetime 20% Discount Unlocked!`}
+              </Text>
+            </View>
+          </View>
+          <View style={{ borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 16 }}>
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground, marginBottom: 12 }}>Pricing Options</Text>
+            <View style={{ gap: 12 }}>
+              <Pressable
+                style={({ pressed }) => [{
+                  paddingVertical: 12,
+                  paddingHorizontal: 14,
+                  borderRadius: 10,
+                  backgroundColor: colors.background,
+                  borderWidth: 1,
+                  borderColor: colors.border,
+                }, pressed && { opacity: 0.85 }]}
+                onPress={() => {
+                  if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  Alert.alert('Monthly Subscription', '$0.99/month - Cancel anytime. Start your 7-day free trial.');
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <View>
+                    <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>Monthly Premium</Text>
+                    <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>Cancel anytime</Text>
+                  </View>
+                  <Text style={{ fontSize: 16, fontWeight: '700', color: colors.primary }}>$0.99/mo</Text>
+                </View>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [{
+                  paddingVertical: 12,
+                  paddingHorizontal: 14,
+                  borderRadius: 10,
+                  backgroundColor: colors.success + '15',
+                  borderWidth: 2,
+                  borderColor: colors.success,
+                }, pressed && { opacity: 0.85 }]}
+                onPress={() => {
+                  if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  Alert.alert('Lifetime Premium', '$49 one-time - Unlock all premium features forever. Best value!');
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <View>
+                    <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>Lifetime Premium</Text>
+                    <Text style={{ fontSize: 12, color: colors.success, marginTop: 2, fontWeight: '600' }}>Best Value ✓</Text>
+                  </View>
+                  <Text style={{ fontSize: 16, fontWeight: '700', color: colors.success }}>$49</Text>
+                </View>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+
         {/* Friends Leaderboard */}
         <Text style={s.sectionTitle}>Friends</Text>
         <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>

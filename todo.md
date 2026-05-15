@@ -74,5 +74,8 @@
 - [x] Add premium feature indicators throughout app (badges, lock icons)
 - [x] Add "Why Upgrade?" card to Profile with premium features list
 - [x] Implement AI-powered correlation analysis for premium users
+- [x] Upgrade referral system with tiered rewards (5 = 1 month free, 10 = 20% lifetime discount)
+- [x] Add one-time lifetime premium purchase option ($49)
+- [x] Display referral tier status in Profile
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

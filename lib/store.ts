@@ -79,6 +79,8 @@ export interface UserProfile {
   referralCode: string; // Unique code for this user
   referralsCount: number; // Number of successful referrals
   referralRewardDays: number; // Bonus trial days earned from referrals
+  referralTier: 'none' | 'tier1' | 'tier2'; // 'none' = 0-4 referrals, 'tier1' = 5-9 (1 month free), 'tier2' = 10+ (20% lifetime discount)
+  lifetimePremiumPurchased: boolean; // Whether user bought lifetime premium ($49 one-time)
   // Friends & Leaderboard
   friendsList: Friend[];
   friendsLeaderboardEnabled: boolean; // Opt-in for friends to see their scores
@@ -93,6 +95,8 @@ export interface UserProfile {
     advancedTrends: boolean; // Advanced trend analysis
     unlimitedHistory: boolean; // Access to all historical data
   };
+  // Pricing options
+  subscriptionType: 'free' | 'monthly' | 'lifetime'; // Current subscription type
 }
 
 export type ProgressCategory =
@@ -139,6 +143,8 @@ export const DEFAULT_PROFILE: UserProfile = {
   referralCode: '',
   referralsCount: 0,
   referralRewardDays: 0,
+  referralTier: 'none',
+  lifetimePremiumPurchased: false,
   friendsList: [],
   friendsLeaderboardEnabled: true,
   isPremium: false,
@@ -151,6 +157,7 @@ export const DEFAULT_PROFILE: UserProfile = {
     advancedTrends: false,
     unlimitedHistory: false,
   },
+  subscriptionType: 'free',
 };
 
 // ─── Score Calculation ────────────────────────────────────────────────────────

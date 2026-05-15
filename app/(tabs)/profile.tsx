@@ -8,6 +8,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ScreenContainer } from '@/components/screen-container';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColors } from '@/hooks/use-colors';
@@ -98,6 +99,7 @@ function ThresholdStepper({
 
 export default function ProfileScreen() {
   const colors = useColors();
+  const router = useRouter();
   const { profile, updateProfile, allDailyEntries } = useApp();
   const [thresholds, setThresholds] = useState(profile.thresholds);
   const [saving, setSaving] = useState(false);
@@ -206,6 +208,32 @@ export default function ProfileScreen() {
             );
           })}
         </View>
+
+        {/* Extra Metrics */}
+        <Text style={s.sectionTitle}>Extra Metrics</Text>
+        <Pressable
+          style={({ pressed }) => [
+            s.card,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+            pressed && { opacity: 0.7 },
+          ]}
+          onPress={() => router.push('/(tabs)/extra-metrics-settings')}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 16, paddingHorizontal: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
+              <View style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center' }}>
+                <IconSymbol name="plus.circle.fill" size={20} color={colors.primary} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>Customize Your Metrics</Text>
+                <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>
+                  {profile.enabledExtraMetrics.length} preset{profile.enabledExtraMetrics.length !== 1 ? 's' : ''} enabled • {profile.customMetrics.length} custom
+                </Text>
+              </View>
+            </View>
+            <IconSymbol name="chevron.right" size={18} color={colors.muted} />
+          </View>
+        </Pressable>
 
         {/* Thresholds */}
         <Text style={s.sectionTitle}>Targets & Thresholds</Text>

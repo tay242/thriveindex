@@ -10,6 +10,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import { ScreenContainer } from '@/components/screen-container';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -147,8 +148,8 @@ export default function OnboardingScreen() {
         <View style={s.navRow}>
           {stepIndex > 0 ? (
             <Pressable style={({ pressed }) => [s.backBtn, pressed && { opacity: 0.6 }]} onPress={goBack}>
-              <IconSymbol name="chevron.left" size={20} color={colors.muted} />
-              <Text style={[s.backText, { color: colors.muted }]}>Back</Text>
+              <IconSymbol name="chevron.left" size={20} color={colors.primary} />
+              <Text style={[s.backText, { color: colors.primary, fontWeight: '600' }]}>Back</Text>
             </Pressable>
           ) : (
             <View style={{ flex: 1 }} />
@@ -182,27 +183,29 @@ export default function OnboardingScreen() {
 
 function WelcomeStep({ colors }: { colors: any }) {
   return (
-    <View style={{ alignItems: 'center', paddingTop: 40 }}>
-      <View style={[{ width: 80, height: 80, borderRadius: 24, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center', marginBottom: 32 }]}>
-        <IconSymbol name="chart.line.uptrend.xyaxis" size={40} color={colors.primary} />
-      </View>
-      <Text style={{ fontSize: 34, fontWeight: '700', color: colors.foreground, textAlign: 'center', marginBottom: 16 }}>
+    <View style={{ alignItems: 'center', paddingTop: 60 }}>
+      {/* App Logo */}
+      <Image
+        source={require('@/assets/images/icon.png')}
+        style={{ width: 100, height: 100, borderRadius: 28, marginBottom: 40 }}
+      />
+      <Text style={{ fontSize: 36, fontWeight: '800', color: colors.foreground, textAlign: 'center', marginBottom: 12, letterSpacing: -0.5 }}>
         ThriveIndex
       </Text>
-      <Text style={{ fontSize: 17, color: colors.muted, textAlign: 'center', lineHeight: 26, paddingHorizontal: 8 }}>
+      <Text style={{ fontSize: 17, color: colors.muted, textAlign: 'center', lineHeight: 26, paddingHorizontal: 12, fontWeight: '500' }}>
         A scientifically grounded operating system for a better life.
       </Text>
-      <View style={{ marginTop: 48, gap: 16, width: '100%' }}>
+      <View style={{ marginTop: 56, gap: 18, width: '100%', paddingHorizontal: 8 }}>
         {[
           { icon: 'bolt.fill', text: 'Evidence-based behaviors' },
           { icon: 'chart.bar.fill', text: 'Measurable daily progress' },
           { icon: 'sparkles', text: 'Less than 2 minutes per day' },
         ].map((item) => (
-          <View key={item.text} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
-            <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.primary + '15', alignItems: 'center', justifyContent: 'center' }}>
-              <IconSymbol name={item.icon as any} size={20} color={colors.primary} />
+          <View key={item.text} style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+            <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center' }}>
+              <IconSymbol name={item.icon as any} size={22} color={colors.primary} />
             </View>
-            <Text style={{ fontSize: 16, color: colors.foreground, fontWeight: '500' }}>{item.text}</Text>
+            <Text style={{ fontSize: 16, color: colors.foreground, fontWeight: '500', lineHeight: 22 }}>{item.text}</Text>
           </View>
         ))}
       </View>
@@ -529,25 +532,34 @@ const styles = (colors: any) =>
     backBtn: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 4,
-      paddingVertical: 8,
-      paddingHorizontal: 4,
+      gap: 6,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      borderRadius: 8,
     },
     backText: {
       fontSize: 16,
+      fontWeight: '600',
     },
     nextBtn: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
       gap: 8,
-      paddingHorizontal: 24,
-      paddingVertical: 14,
-      borderRadius: 100,
+      paddingHorizontal: 28,
+      paddingVertical: 16,
+      borderRadius: 12,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+      elevation: 5,
     },
     nextText: {
       color: '#fff',
-      fontSize: 16,
-      fontWeight: '600',
+      fontSize: 17,
+      fontWeight: '700',
+      letterSpacing: 0.3,
     },
   });
 

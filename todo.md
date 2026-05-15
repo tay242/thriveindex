@@ -83,3 +83,10 @@
 - [x] Test dark mode contrast and readability
 - [x] Extra metrics tracking on Today screen
 - [x] AI correlation insights for premium users (LLM-powered analysis)
+
+## Onboarding UX Improvements
+- [x] Add logo to first onboarding screen
+- [x] Improve visual hierarchy and spacing on all screens
+- [x] Fix button styling with better visual prominence (shadow, padding)
+- [x] Enhance micro-interactions (button feedback, animations)
+- [x] Test onboarding flow end-to-end

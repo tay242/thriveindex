@@ -13,6 +13,8 @@ import {
 import { ScreenContainer } from '@/components/screen-container';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { StreakCelebration } from '@/components/streak-celebration';
+import { SyncStatusBadge } from '@/components/sync-status-badge';
+import { ExtraMetricsCard } from '@/components/extra-metrics-card';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
 import { useHealthKit } from '@/hooks/use-health-kit';
@@ -137,7 +139,7 @@ const metricStyles = StyleSheet.create({
 
 export default function TodayScreen() {
   const colors = useColors();
-  const { profile, todayEntry, updateTodayEntry, streakCelebration, setStreakCelebration } = useApp();
+  const { profile, todayEntry, updateTodayEntry, streakCelebration, setStreakCelebration, isOnline, hasPendingSync } = useApp();
   const { data: healthData, loading: healthLoading, fetchTodayData, authorized: healthAuthorized } = useHealthKit();
   const [gratitude, setGratitude] = useState(todayEntry?.gratitude ?? '');
   const [progressNote, setProgressNote] = useState(todayEntry?.progressNote ?? '');
@@ -146,6 +148,7 @@ export default function TodayScreen() {
   );
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [extraMetrics, setExtraMetrics] = useState(todayEntry?.extraMetrics ?? []);
 
   const today = todayString();
   const score = todayEntry?.dailyScore ?? 0;
@@ -184,6 +187,7 @@ export default function TodayScreen() {
       gratitude,
       progressNote,
       progressCategory: selectedCategory,
+      extraMetrics,
     });
     setSaving(false);
   };
@@ -218,6 +222,13 @@ export default function TodayScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
+        {/* Sync Status Badge */}
+        <SyncStatusBadge
+          isOnline={isOnline}
+          hasPendingSync={hasPendingSync}
+          colors={colors}
+        />
+
         {/* Header */}
         <View style={s.header}>
           <View>
@@ -301,6 +312,16 @@ export default function TodayScreen() {
           />
           <View style={{ flex: 1 }} />
         </View>
+
+        {/* Extra Metrics */}
+        <ExtraMetricsCard
+          enabledMetrics={profile.enabledExtraMetrics}
+          todayMetrics={extraMetrics}
+          onUpdate={(metrics) => {
+            setExtraMetrics(metrics);
+          }}
+          colors={colors}
+        />
 
         {/* Morning Sunlight */}
         <Text style={s.sectionTitle}>Morning Sunlight</Text>

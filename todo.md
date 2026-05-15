@@ -77,5 +77,9 @@
 - [x] Upgrade referral system with tiered rewards (5 = 1 month free, 10 = 20% lifetime discount)
 - [x] Add one-time lifetime premium purchase option ($49)
 - [x] Display referral tier status in Profile
-- [ ] Extra metrics tracking on Today screen
-- [ ] Extra metrics included in daily score calculation
+- [x] Implement offline-first architecture with AsyncStorage sync queue
+- [x] Add network status detection and sync indicator
+- [x] Optimize dark mode colors for all screens (score rings, charts, cards)
+- [x] Test dark mode contrast and readability
+- [x] Extra metrics tracking on Today screen
+- [x] AI correlation insights for premium users (LLM-powered analysis)

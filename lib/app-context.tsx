@@ -20,6 +20,8 @@ import {
   seedDemoData,
 } from './store';
 import { useNotifications } from '@/hooks/use-notifications';
+import { OfflineSyncManager } from './offline-sync';
+import { useNetworkStatus } from '@/hooks/use-network-status';
 
 interface AppContextValue {
   profile: UserProfile;
@@ -30,6 +32,8 @@ interface AppContextValue {
   isLoading: boolean;
   streakCelebration: { visible: boolean; streak: number };
   setStreakCelebration: (state: { visible: boolean; streak: number }) => void;
+  isOnline: boolean;
+  hasPendingSync: boolean;
   updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
   updateTodayEntry: (updates: Partial<DailyEntry>) => Promise<void>;
   updateWeekEntry: (updates: Partial<WeeklyEntry>) => Promise<void>;
@@ -47,6 +51,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [allWeeklyEntries, setAllWeeklyEntries] = useState<WeeklyEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [streakCelebration, setStreakCelebration] = useState({ visible: false, streak: 0 });
+  const [hasPendingSync, setHasPendingSync] = useState(false);
+  const networkStatus = useNetworkStatus();
   const { requestPermissions, scheduleMorningReminder } = useNotifications();
 
   const loadData = useCallback(async () => {
@@ -72,6 +78,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  // Check for pending sync when network status changes
+  useEffect(() => {
+    const checkPendingSync = async () => {
+      const hasPending = await OfflineSyncManager.hasPendingChanges();
+      setHasPendingSync(hasPending);
+    };
+    checkPendingSync();
+  }, [networkStatus.isConnected]);
 
   const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
     await saveProfile(updates);
@@ -168,6 +183,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         streakCelebration,
         setStreakCelebration,
+        isOnline: networkStatus.isConnected,
+        hasPendingSync,
         updateProfile,
         updateTodayEntry,
         updateWeekEntry,

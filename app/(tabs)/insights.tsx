@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { ScreenContainer } from '@/components/screen-container';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { PremiumInsightsCard } from '@/components/premium-insights-card';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
 import { DailyEntry } from '@/lib/store';
@@ -320,6 +321,42 @@ export default function InsightsScreen() {
             Target: {profile.thresholds.steps.toLocaleString()} steps · 7-day avg: {avgSteps}
           </Text>
         </View>
+
+        {/* AI Correlation Insights (Premium) */}
+        <PremiumInsightsCard
+          isPremium={profile.isPremium}
+          metrics={[
+            {
+              name: 'Daily Score',
+              values: last14.map((e) => e.dailyScore),
+              average: last14.length > 0
+                ? last14.reduce((s, e) => s + e.dailyScore, 0) / last14.length
+                : 0,
+            },
+            {
+              name: 'Sleep',
+              values: last14.map((e) => e.sleepHours),
+              average: last14.length > 0
+                ? last14.reduce((s, e) => s + e.sleepHours, 0) / last14.length
+                : 0,
+            },
+            {
+              name: 'Steps',
+              values: last14.map((e) => e.steps),
+              average: last14.length > 0
+                ? last14.reduce((s, e) => s + e.steps, 0) / last14.length
+                : 0,
+            },
+            {
+              name: 'Exercise',
+              values: last14.map((e) => e.exerciseMinutes),
+              average: last14.length > 0
+                ? last14.reduce((s, e) => s + e.exerciseMinutes, 0) / last14.length
+                : 0,
+            },
+          ]}
+          colors={colors}
+        />
 
         {/* Behavioral Insights */}
         <Text style={s.sectionTitle}>Behavioral Insights</Text>

@@ -69,5 +69,10 @@
 - [x] Add Friends leaderboard section to Profile (opt-in, privacy-respecting)
 - [x] Add friend invite/add functionality with unique friend codes
 - [x] Display friends' streaks and weekly scores on leaderboard
+- [x] Add isPremium flag to UserProfile
+- [x] Implement free tier limits (basic metrics only, limited history, basic insights)
+- [x] Add premium feature indicators throughout app (badges, lock icons)
+- [x] Add "Why Upgrade?" card to Profile with premium features list
+- [x] Implement AI-powered correlation analysis for premium users
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

@@ -65,6 +65,7 @@ const MAPPING = {
   "doc.on.doc": "content-copy",
   "plus.circle.fill": "add-circle",
   "calendar.badge.fill": "event-note",
+  "infinity": "all-inclusive",
 } as IconMapping;
 
 export function IconSymbol({

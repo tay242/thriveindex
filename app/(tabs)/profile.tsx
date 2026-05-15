@@ -449,6 +449,53 @@ export default function ProfileScreen() {
           </Pressable>
         </View>
 
+        {/* Why Upgrade */}
+        {!profile.isPremium && (
+          <>
+            <Text style={s.sectionTitle}>Premium Features</Text>
+            <View style={[s.card, { backgroundColor: colors.warning + '10', borderColor: colors.warning + '30' }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                <IconSymbol name="lock.fill" size={22} color={colors.warning} />
+                <Text style={{ fontSize: 17, fontWeight: '700', color: colors.foreground }}>
+                  Unlock Premium
+                </Text>
+              </View>
+              <Text style={{ fontSize: 14, color: colors.muted, lineHeight: 22, marginBottom: 16 }}>
+                Upgrade to access AI-powered insights, unlimited extra metrics, advanced trend analysis, and more.
+              </Text>
+              <View style={{ gap: 8, marginBottom: 16 }}>
+                {[
+                  { icon: 'sparkles', text: 'AI-powered weekly summaries' },
+                  { icon: 'chart.line.uptrend.xyaxis', text: 'Habit correlation analysis' },
+                  { icon: 'infinity', text: 'Unlimited extra metrics' },
+                  { icon: 'heart.fill', text: 'Extra gratitude logging' },
+                  { icon: 'chart.bar.fill', text: 'Advanced trend analysis' },
+                  { icon: 'calendar', text: 'Unlimited history access' },
+                ].map((f) => (
+                  <View key={f.text} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                    <IconSymbol name={f.icon as any} size={14} color={colors.warning} />
+                    <Text style={{ fontSize: 13, color: colors.foreground }}>{f.text}</Text>
+                  </View>
+                ))}
+              </View>
+              <Pressable
+                style={({ pressed }) => [{
+                  paddingVertical: 12,
+                  borderRadius: 10,
+                  backgroundColor: colors.warning,
+                  alignItems: 'center',
+                }, pressed && { opacity: 0.85 }]}
+                onPress={() => {
+                  if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  Alert.alert('Upgrade to Premium', 'Start your free trial today and unlock all premium features!');
+                }}
+              >
+                <Text style={{ fontSize: 14, fontWeight: '600', color: colors.background }}>See Premium Features</Text>
+              </Pressable>
+            </View>
+          </>
+        )}
+
         {/* Share ThriveIndex */}
         <Text style={s.sectionTitle}>Share & Earn</Text>
         <View style={[s.card, { backgroundColor: colors.primary + '10', borderColor: colors.primary + '30' }]}>

@@ -82,6 +82,17 @@ export interface UserProfile {
   // Friends & Leaderboard
   friendsList: Friend[];
   friendsLeaderboardEnabled: boolean; // Opt-in for friends to see their scores
+  // Premium subscription
+  isPremium: boolean; // Whether user has active premium subscription
+  premiumTrialDaysRemaining: number; // Days left in trial (0 = no trial or expired)
+  premiumFeatures: {
+    aiSummaries: boolean; // AI-powered weekly summaries
+    correlationAnalysis: boolean; // AI correlation insights
+    unlimitedMetrics: boolean; // Can add unlimited extra metrics
+    extraGratitude: boolean; // Can log extra gratitude items
+    advancedTrends: boolean; // Advanced trend analysis
+    unlimitedHistory: boolean; // Access to all historical data
+  };
 }
 
 export type ProgressCategory =
@@ -130,6 +141,16 @@ export const DEFAULT_PROFILE: UserProfile = {
   referralRewardDays: 0,
   friendsList: [],
   friendsLeaderboardEnabled: true,
+  isPremium: false,
+  premiumTrialDaysRemaining: 7, // Start with 7-day trial
+  premiumFeatures: {
+    aiSummaries: false,
+    correlationAnalysis: false,
+    unlimitedMetrics: false,
+    extraGratitude: false,
+    advancedTrends: false,
+    unlimitedHistory: false,
+  },
 };
 
 // ─── Score Calculation ────────────────────────────────────────────────────────

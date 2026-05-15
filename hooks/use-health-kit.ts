@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import * as Health from 'expo-health';
+
+let Health: any = null;
+try {
+  Health = require('expo-health');
+} catch (e) {
+  // expo-health not available in this environment
+}
 
 export interface HealthData {
   sleepHours: number;
@@ -28,6 +34,10 @@ export function useHealthKit() {
 
   // Request HealthKit permissions
   const requestPermissions = async () => {
+    if (!Health) {
+      setError('HealthKit module not available');
+      return;
+    }
     if (Platform.OS !== 'ios') {
       setError('HealthKit is only available on iOS');
       return;
@@ -48,7 +58,7 @@ export function useHealthKit() {
 
   // Fetch today's health data
   const fetchTodayData = async () => {
-    if (Platform.OS !== 'ios') {
+    if (!Health || Platform.OS !== 'ios') {
       setData(null);
       return;
     }

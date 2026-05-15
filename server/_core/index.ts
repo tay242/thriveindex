@@ -7,6 +7,8 @@ import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { generateWeeklySummaryEmail } from "./weeklyEmailGenerator";
+import { sdk } from "./sdk";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise((resolve) => {
@@ -60,6 +62,32 @@ async function startServer() {
 
   app.get("/api/health", (_req, res) => {
     res.json({ ok: true, timestamp: Date.now() });
+  });
+
+  // Scheduled email handler for weekly digest
+  app.post("/api/scheduled/weekly-digest", async (req, res) => {
+    try {
+      const user = await sdk.authenticateRequest(req);
+      if (!user.isCron || !user.taskUid) {
+        return res.status(403).json({ error: "cron-only" });
+      }
+
+      const result = await generateWeeklySummaryEmail(String(user.id));
+      if (!result.ok) {
+        return res.status(500).json({ error: result.error });
+      }
+
+      const emailSubject = result.email?.subject || 'Weekly Summary';
+      console.log(`Weekly digest email generated for user ${user.id}:`, emailSubject);
+      res.json({ ok: true, email: emailSubject });
+    } catch (error) {
+      const err = error instanceof Error ? error : new Error(String(error));
+      res.status(500).json({
+        error: err.message,
+        stack: err.stack,
+        context: { url: req.url, timestamp: new Date().toISOString() },
+      });
+    }
   });
 
   app.use(

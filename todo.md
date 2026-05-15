@@ -45,3 +45,6 @@
 
 ## Enhancements
 - [x] Add evidence-based citations to onboarding thresholds (peer-reviewed + wellbeing research)
+- [x] Apple Health integration (read sleep, steps, exercise from HealthKit)
+- [x] Daily reminder notifications (9 PM reflection, 8 AM sunlight)
+- [x] Weekly summary email endpoint and scheduler

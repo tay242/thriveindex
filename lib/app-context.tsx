@@ -19,6 +19,7 @@ import {
   DEFAULT_PROFILE,
   seedDemoData,
 } from './store';
+import { useNotifications } from '@/hooks/use-notifications';
 
 interface AppContextValue {
   profile: UserProfile;
@@ -43,6 +44,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [allDailyEntries, setAllDailyEntries] = useState<DailyEntry[]>([]);
   const [allWeeklyEntries, setAllWeeklyEntries] = useState<WeeklyEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { requestPermissions, scheduleMorningReminder } = useNotifications();
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
@@ -136,8 +138,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const completeOnboarding = useCallback(async (name: string) => {
     await saveProfile({ onboardingComplete: true, name });
     await seedDemoData(DEFAULT_PROFILE.thresholds);
+    await requestPermissions();
+    await scheduleMorningReminder();
     await loadData();
-  }, [loadData]);
+  }, [loadData, requestPermissions, scheduleMorningReminder]);
+
+  // Set up notifications on mount
+  useEffect(() => {
+    requestPermissions();
+    if (profile.onboardingComplete) {
+      scheduleMorningReminder();
+    }
+  }, []);
 
   return (
     <AppContext.Provider

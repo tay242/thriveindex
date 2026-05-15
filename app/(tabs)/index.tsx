@@ -14,6 +14,7 @@ import { ScreenContainer } from '@/components/screen-container';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
+import { useHealthKit } from '@/hooks/use-health-kit';
 import { ProgressCategory, formatDate, todayString } from '@/lib/store';
 import * as Haptics from 'expo-haptics';
 import Svg, { Circle } from 'react-native-svg';
@@ -136,6 +137,7 @@ const metricStyles = StyleSheet.create({
 export default function TodayScreen() {
   const colors = useColors();
   const { profile, todayEntry, updateTodayEntry } = useApp();
+  const { data: healthData, loading: healthLoading, fetchTodayData, authorized: healthAuthorized } = useHealthKit();
   const [gratitude, setGratitude] = useState(todayEntry?.gratitude ?? '');
   const [progressNote, setProgressNote] = useState(todayEntry?.progressNote ?? '');
   const [selectedCategory, setSelectedCategory] = useState<ProgressCategory | null>(
@@ -156,6 +158,18 @@ export default function TodayScreen() {
   const sleepMet = sleepHours >= thresholds.sleepHours;
   const stepsMet = steps >= thresholds.steps;
   const exerciseMet = exerciseMinutes >= thresholds.exerciseMinutes;
+
+  const handleSyncHealthKit = async () => {
+    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    await fetchTodayData();
+    if (healthData) {
+      await updateTodayEntry({
+        sleepHours: healthData.sleepHours,
+        steps: healthData.steps,
+        exerciseMinutes: healthData.exerciseMinutes,
+      });
+    }
+  };
 
   const handleSunlight = async (val: boolean) => {
     if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -219,6 +233,24 @@ export default function TodayScreen() {
             </Text>
           </View>
         </View>
+
+        {/* Sync Button */}
+        {Platform.OS === 'ios' && (
+          <Pressable
+            style={({ pressed }) => [
+              { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 16, paddingVertical: 12, borderRadius: 12, backgroundColor: colors.primary + '15', marginBottom: 20 },
+              pressed && { opacity: 0.7 },
+            ]}
+            onPress={handleSyncHealthKit}
+            disabled={healthLoading}
+          >
+            <IconSymbol name={healthLoading ? 'hourglass' : 'arrow.clockwise'} size={16} color={colors.primary} />
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.primary, flex: 1 }}>
+              {healthLoading ? 'Syncing...' : 'Sync Apple Health'}
+            </Text>
+            {healthData && <IconSymbol name="checkmark.circle.fill" size={16} color={colors.success} />}
+          </Pressable>
+        )}
 
         {/* Automated Metrics */}
         <Text style={s.sectionTitle}>Activity</Text>

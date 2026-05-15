@@ -95,6 +95,7 @@ describe('calculateWeeklyScore', () => {
       gratitude: 'Good',
       progressNote: 'Done',
       progressCategory: null,
+      extraMetrics: [],
       dailyScore: 100,
       completedAt: null,
     }));

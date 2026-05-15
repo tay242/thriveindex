@@ -69,6 +69,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="science"
+        options={{
+          title: "Science",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={24} name="flask.fill" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

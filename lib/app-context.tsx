@@ -88,6 +88,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         progressNote: '',
         progressCategory: null,
         morningSunlight: null,
+        extraMetrics: [],
         dailyScore: 0,
         completedAt: null,
       };

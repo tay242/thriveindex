@@ -2,6 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+export interface ExtraMetricEntry {
+  id: string; // e.g., 'water', 'meditation', or custom UUID
+  value: number; // e.g., 8 glasses, 20 minutes
+  isCustom?: boolean; // true if user-created
+}
+
 export interface DailyEntry {
   date: string; // YYYY-MM-DD
   // Automated metrics (simulated / from Health)
@@ -13,6 +19,8 @@ export interface DailyEntry {
   progressNote: string;
   progressCategory: ProgressCategory | null;
   morningSunlight: boolean | null;
+  // Extra metrics
+  extraMetrics: ExtraMetricEntry[];
   // Computed
   dailyScore: number;
   completedAt: string | null;
@@ -34,11 +42,22 @@ export interface Thresholds {
   exerciseMinutes: number;
 }
 
+export interface CustomMetric {
+  id: string; // UUID
+  name: string;
+  unit: string;
+  icon: string; // icon name
+  defaultTarget: number;
+  createdAt: string;
+}
+
 export interface UserProfile {
   onboardingComplete: boolean;
   name: string;
   thresholds: Thresholds;
   priorities: ProgressCategory[];
+  enabledExtraMetrics: string[]; // IDs of enabled preset metrics
+  customMetrics: CustomMetric[];
   streak: number;
   longestStreak: number;
   totalDaysTracked: number;
@@ -76,6 +95,8 @@ export const DEFAULT_PROFILE: UserProfile = {
   name: '',
   thresholds: DEFAULT_THRESHOLDS,
   priorities: ['Health', 'Personal Growth'],
+  enabledExtraMetrics: [],
+  customMetrics: [],
   streak: 0,
   longestStreak: 0,
   totalDaysTracked: 0,
@@ -325,6 +346,7 @@ export async function seedDemoData(thresholds: Thresholds): Promise<void> {
       gratitude,
       progressNote,
       progressCategory,
+      extraMetrics: [],
       dailyScore: 0,
       completedAt: d.toISOString(),
     };

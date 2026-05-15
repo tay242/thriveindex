@@ -48,3 +48,7 @@
 - [x] Apple Health integration (read sleep, steps, exercise from HealthKit)
 - [x] Daily reminder notifications (9 PM reflection, 8 AM sunlight)
 - [x] Weekly summary email endpoint and scheduler
+- [x] Science screen explaining research behind core metrics (sleep, steps, exercise, sunlight)
+- [x] Extra metrics system with 12 presets (water, meditation, journaling, etc.) + custom creator
+- [ ] Extra metrics tracking on Today screen
+- [ ] Extra metrics included in daily score calculation

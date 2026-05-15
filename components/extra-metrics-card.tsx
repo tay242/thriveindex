@@ -23,6 +23,7 @@ interface ExtraMetricsCardProps {
 /**
  * Displays interactive input cards for enabled extra metrics.
  * Users can log their daily progress on optional metrics like water, meditation, etc.
+ * Features quick-select buttons on the right for common values.
  */
 export function ExtraMetricsCard({
   enabledMetrics,
@@ -68,6 +69,13 @@ export function ExtraMetricsCard({
     return EXTRA_METRICS_PRESETS.find((p) => p.id === metricId);
   };
 
+  // Generate quick select options based on target (0, 0.5x, 1x, 1.5x target)
+  const getQuickSelectOptions = (target: number): number[] => {
+    if (target <= 1) return [0, 1];
+    if (target <= 3) return [0, Math.floor(target * 0.5), target];
+    return [0, Math.floor(target * 0.5), target, Math.floor(target * 1.5)];
+  };
+
   return (
     <View style={{ marginBottom: 24 }}>
       <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
@@ -81,6 +89,7 @@ export function ExtraMetricsCard({
 
           const pct = Math.min(value / preset_data.defaultTarget, 1);
           const isMet = value >= preset_data.defaultTarget;
+          const quickOptions = getQuickSelectOptions(preset_data.defaultTarget);
 
           return (
             <View
@@ -93,13 +102,13 @@ export function ExtraMetricsCard({
                 },
               ]}
             >
-              {/* Header: Icon + Label + Value */}
+              {/* Header: Icon + Label */}
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  marginBottom: 10,
+                  marginBottom: 12,
                 }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
@@ -149,8 +158,9 @@ export function ExtraMetricsCard({
                 )}
               </View>
 
-              {/* Input + Progress Bar */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              {/* Input Row + Quick Select Buttons */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                {/* Text Input */}
                 <TextInput
                   value={String(value)}
                   onChangeText={(text) => {
@@ -176,11 +186,40 @@ export function ExtraMetricsCard({
                     fontSize: 13,
                     color: colors.muted,
                     fontWeight: '500',
-                    minWidth: 40,
+                    minWidth: 30,
                   }}
                 >
                   {preset_data.unit}
                 </Text>
+
+                {/* Quick Select Buttons */}
+                <View style={{ flexDirection: 'row', gap: 6 }}>
+                  {quickOptions.map((option) => (
+                    <Pressable
+                      key={option}
+                      style={({ pressed }) => [
+                        styles.quickSelectBtn,
+                        {
+                          backgroundColor:
+                            value === option ? colors.primary : colors.background,
+                          borderColor: value === option ? colors.primary : colors.border,
+                        },
+                        pressed && { opacity: 0.7 },
+                      ]}
+                      onPress={() => handleValueChange(preset.id, option)}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: '600',
+                          color: value === option ? '#fff' : colors.foreground,
+                        }}
+                      >
+                        {option}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
               </View>
 
               {/* Progress Bar */}
@@ -189,7 +228,7 @@ export function ExtraMetricsCard({
                   height: 4,
                   backgroundColor: colors.border,
                   borderRadius: 2,
-                  marginTop: 8,
+                  marginTop: 10,
                   overflow: 'hidden',
                 }}
               >
@@ -219,16 +258,25 @@ const styles = StyleSheet.create({
   },
   metricCard: {
     borderRadius: 12,
-    padding: 12,
+    padding: 14,
     borderWidth: 1,
   },
   input: {
-    flex: 1,
-    borderWidth: 1,
+    width: 50,
+    height: 40,
     borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    borderWidth: 1,
+    paddingHorizontal: 8,
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
+  },
+  quickSelectBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

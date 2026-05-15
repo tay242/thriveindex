@@ -16,6 +16,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
 import { DEFAULT_THRESHOLDS, ProgressCategory } from '@/lib/store';
+import { EVIDENCE } from '@/lib/evidence';
 import * as Haptics from 'expo-haptics';
 
 const { width } = Dimensions.get('window');
@@ -296,6 +297,8 @@ function ThresholdsStep({
   thresholds: typeof DEFAULT_THRESHOLDS;
   setThresholds: (t: typeof DEFAULT_THRESHOLDS) => void;
 }) {
+  const [expandedKey, setExpandedKey] = useState<string | null>(null);
+
   const items = [
     {
       key: 'sleepHours' as const,
@@ -305,6 +308,7 @@ function ThresholdsStep({
       max: 10,
       step: 0.5,
       icon: 'moon.fill',
+      evidenceKey: 'sleep' as const,
     },
     {
       key: 'steps' as const,
@@ -314,6 +318,7 @@ function ThresholdsStep({
       max: 15000,
       step: 500,
       icon: 'figure.walk',
+      evidenceKey: 'steps' as const,
     },
     {
       key: 'exerciseMinutes' as const,
@@ -323,6 +328,7 @@ function ThresholdsStep({
       max: 90,
       step: 5,
       icon: 'flame.fill',
+      evidenceKey: 'exercise' as const,
     },
   ];
 
@@ -332,48 +338,87 @@ function ThresholdsStep({
         Set Your Targets
       </Text>
       <Text style={{ fontSize: 16, color: colors.muted, marginBottom: 32, lineHeight: 24 }}>
-        These are the thresholds used to calculate your daily score. You can change them anytime.
+        These thresholds are backed by peer-reviewed research. Tap to learn more.
       </Text>
-      {items.map((item) => (
-        <View
-          key={item.key}
-          style={{ backgroundColor: colors.surface, borderRadius: 16, padding: 20, marginBottom: 16, borderWidth: 1, borderColor: colors.border }}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-            <IconSymbol name={item.icon as any} size={20} color={colors.primary} />
-            <Text style={{ fontSize: 16, fontWeight: '600', color: colors.foreground }}>{item.label}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Pressable
-              style={({ pressed }) => [
-                { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.border, alignItems: 'center', justifyContent: 'center' },
-                pressed && { opacity: 0.6 },
-              ]}
-              onPress={() => {
-                const newVal = Math.max(item.min, thresholds[item.key] - item.step);
-                setThresholds({ ...thresholds, [item.key]: Math.round(newVal * 10) / 10 });
+      {items.map((item) => {
+        const evidence = EVIDENCE[item.evidenceKey];
+        const isExpanded = expandedKey === item.key;
+        return (
+          <Pressable
+            key={item.key}
+            onPress={() => setExpandedKey(isExpanded ? null : item.key)}
+            style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
+          >
+            <View
+              style={{
+                backgroundColor: colors.surface,
+                borderRadius: 16,
+                padding: 20,
+                marginBottom: 16,
+                borderWidth: 1,
+                borderColor: colors.border,
               }}
             >
-              <IconSymbol name="minus" size={18} color={colors.foreground} />
-            </Pressable>
-            <Text style={{ fontSize: 22, fontWeight: '700', color: colors.primary }}>
-              {thresholds[item.key]} <Text style={{ fontSize: 14, color: colors.muted, fontWeight: '400' }}>{item.unit}</Text>
-            </Text>
-            <Pressable
-              style={({ pressed }) => [
-                { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.border, alignItems: 'center', justifyContent: 'center' },
-                pressed && { opacity: 0.6 },
-              ]}
-              onPress={() => {
-                const newVal = Math.min(item.max, thresholds[item.key] + item.step);
-                setThresholds({ ...thresholds, [item.key]: Math.round(newVal * 10) / 10 });
-              }}
-            >
-              <IconSymbol name="plus" size={18} color={colors.foreground} />
-            </Pressable>
-          </View>
-        </View>
-      ))}
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+                <IconSymbol name={item.icon as any} size={20} color={colors.primary} />
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 16, fontWeight: '600', color: colors.foreground }}>{item.label}</Text>
+                  <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>{evidence.recommended}</Text>
+                </View>
+                <IconSymbol name={isExpanded ? 'chevron.up' : 'chevron.down'} size={16} color={colors.muted} />
+              </View>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Pressable
+                  style={({ pressed }) => [
+                    { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.border, alignItems: 'center', justifyContent: 'center' },
+                    pressed && { opacity: 0.6 },
+                  ]}
+                  onPress={() => {
+                    const newVal = Math.max(item.min, thresholds[item.key] - item.step);
+                    setThresholds({ ...thresholds, [item.key]: Math.round(newVal * 10) / 10 });
+                  }}
+                >
+                  <IconSymbol name="minus" size={18} color={colors.foreground} />
+                </Pressable>
+                <Text style={{ fontSize: 22, fontWeight: '700', color: colors.primary }}>
+                  {thresholds[item.key]} <Text style={{ fontSize: 14, color: colors.muted, fontWeight: '400' }}>{item.unit}</Text>
+                </Text>
+                <Pressable
+                  style={({ pressed }) => [
+                    { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.border, alignItems: 'center', justifyContent: 'center' },
+                    pressed && { opacity: 0.6 },
+                  ]}
+                  onPress={() => {
+                    const newVal = Math.min(item.max, thresholds[item.key] + item.step);
+                    setThresholds({ ...thresholds, [item.key]: Math.round(newVal * 10) / 10 });
+                  }}
+                >
+                  <IconSymbol name="plus" size={18} color={colors.foreground} />
+                </Pressable>
+              </View>
+
+              {isExpanded && (
+                <View style={{ marginTop: 20, paddingTop: 16, borderTopWidth: 1, borderTopColor: colors.border, gap: 12 }}>
+                  {evidence.findings.map((finding, idx) => (
+                    <View key={idx}>
+                      <Text style={{ fontSize: 13, fontWeight: '600', color: colors.foreground, marginBottom: 4 }}>
+                        {finding.title}
+                      </Text>
+                      <Text style={{ fontSize: 12, color: colors.muted, lineHeight: 18, marginBottom: 6 }}>
+                        {finding.text}
+                      </Text>
+                      <Text style={{ fontSize: 11, color: colors.primary, fontStyle: 'italic' }}>
+                        — {finding.source}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }

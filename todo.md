@@ -42,3 +42,6 @@
 - [x] Threshold settings (sleep, steps, exercise)
 - [x] Subscription info card
 - [x] App version info
+
+## Enhancements
+- [x] Add evidence-based citations to onboarding thresholds (peer-reviewed + wellbeing research)

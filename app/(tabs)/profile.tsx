@@ -14,6 +14,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
 import { DEFAULT_THRESHOLDS } from '@/lib/store';
+import { CORE_METRICS_SCIENCE } from '@/lib/science';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -207,6 +208,25 @@ export default function ProfileScreen() {
               </View>
             );
           })}
+        </View>
+
+        {/* Science & Research */}
+        <Text style={s.sectionTitle}>The Science</Text>
+        <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border, padding: 0 }]}>
+          {Object.entries(CORE_METRICS_SCIENCE).map(([key, metric], index) => (
+            <View key={key}>
+              <View style={{ paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'flex-start', gap: 12 }}>
+                <IconSymbol name={metric.icon as any} size={20} color={colors.primary} />
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>{metric.title}</Text>
+                  <Text style={{ fontSize: 12, color: colors.muted, marginTop: 4, lineHeight: 16 }}>{metric.description}</Text>
+                </View>
+              </View>
+              {index < Object.keys(CORE_METRICS_SCIENCE).length - 1 && (
+                <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
+              )}
+            </View>
+          ))}
         </View>
 
         {/* Extra Metrics */}

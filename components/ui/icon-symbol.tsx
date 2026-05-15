@@ -59,6 +59,8 @@ const MAPPING = {
   "person.2.fill": "group",
   "hand.raised.fill": "back-hand",
   "globe": "language",
+  "book.fill": "menu-book",
+  "flask.fill": "science",
 } as IconMapping;
 
 export function IconSymbol({

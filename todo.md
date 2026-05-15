@@ -52,6 +52,8 @@
 - [x] Extra metrics system with 12 presets (water, meditation, journaling, etc.) + custom creator
 - [x] Moved extra metrics management to Profile screen
 - [x] Moved Profile tab to far right of navigation
-- [x] Added Science tab icon (book.fill)
+- [x] Added Science section to Profile screen
+- [x] Removed Science tab from navigation
+- [x] Added icon mappings for book.fill and flask.fill
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

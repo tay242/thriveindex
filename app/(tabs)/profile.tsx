@@ -14,7 +14,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColors } from '@/hooks/use-colors';
 import { useApp } from '@/lib/app-context';
 import { DEFAULT_THRESHOLDS } from '@/lib/store';
-import { CORE_METRICS_SCIENCE } from '@/lib/science';
+import { CORE_METRICS_SCIENCE, EXTRA_METRICS_PRESETS } from '@/lib/science';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -245,6 +245,47 @@ export default function ProfileScreen() {
               </View>
             </View>
           </View>
+        </View>
+
+        {/* Extra Metrics Toggle Section */}
+        <Text style={s.sectionTitle}>Your Extra Metrics</Text>
+        <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border, padding: 0 }]}>
+          {EXTRA_METRICS_PRESETS.map((preset, index) => {
+            const isEnabled = profile.enabledExtraMetrics.includes(preset.id);
+            return (
+              <View key={preset.id}>
+                <Pressable
+                  style={({ pressed }) => [
+                    { paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+                    pressed && { opacity: 0.7 },
+                  ]}
+                  onPress={() => {
+                    const updated = isEnabled
+                      ? profile.enabledExtraMetrics.filter(id => id !== preset.id)
+                      : [...profile.enabledExtraMetrics, preset.id];
+                    updateProfile({ enabledExtraMetrics: updated });
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
+                    <View style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: isEnabled ? colors.primary + '20' : colors.border, alignItems: 'center', justifyContent: 'center' }}>
+                      <IconSymbol name={preset.icon as any} size={18} color={isEnabled ? colors.primary : colors.muted} />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>{preset.name}</Text>
+                      <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>{preset.description}</Text>
+                    </View>
+                  </View>
+                  <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: isEnabled ? colors.primary : colors.border, alignItems: 'center', justifyContent: 'center' }}>
+                    {isEnabled && <IconSymbol name="checkmark" size={14} color={colors.background} />}
+                  </View>
+                </Pressable>
+                {index < EXTRA_METRICS_PRESETS.length - 1 && (
+                  <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
+                )}
+              </View>
+            );
+          })}
         </View>
 
         {/* Thresholds */}

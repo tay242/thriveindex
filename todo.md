@@ -55,5 +55,6 @@
 - [x] Added Science and Extra Metrics cards to Profile header
 - [x] Removed standalone Science and Extra Metrics sections
 - [x] Added icon mappings for book.fill and flask.fill
+- [x] Add toggle switches for extra metrics in Profile section
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

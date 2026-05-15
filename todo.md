@@ -61,5 +61,7 @@
 - [x] Add notification settings to Profile screen (update daily/weekly times)
 - [x] Update subscription messaging to emphasize supporting the team
 - [x] Add referral system with Share card in Profile
+- [x] Add "Why ThriveIndex?" screen to onboarding (philosophy + differentiation)
+- [x] Add "Sample Day" walkthrough screen to onboarding
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

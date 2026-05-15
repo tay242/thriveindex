@@ -21,7 +21,7 @@ import * as Haptics from 'expo-haptics';
 
 const { width } = Dimensions.get('window');
 
-const STEPS = ['welcome', 'philosophy', 'name', 'health', 'thresholds', 'priorities', 'dailyNotification', 'weeklyNotification'] as const;
+const STEPS = ['welcome', 'why', 'sampleDay', 'philosophy', 'name', 'health', 'thresholds', 'priorities', 'dailyNotification', 'weeklyNotification'] as const;
 type Step = (typeof STEPS)[number];
 
 const ALL_PRIORITIES: ProgressCategory[] = [
@@ -102,6 +102,8 @@ export default function OnboardingScreen() {
             showsVerticalScrollIndicator={false}
           >
             {step === 'welcome' && <WelcomeStep colors={colors} />}
+            {step === 'why' && <WhyStep colors={colors} />}
+            {step === 'sampleDay' && <SampleDayStep colors={colors} />}
             {step === 'philosophy' && <PhilosophyStep colors={colors} />}
             {step === 'name' && (
               <NameStep colors={colors} name={name} setName={setName} />
@@ -790,6 +792,164 @@ function WeeklyNotificationStep({
             {days[day]} at {String(hour).padStart(2, '0')}:{String(minute).padStart(2, '0')}
           </Text>
         </View>
+      </View>
+    </View>
+  );
+}
+
+// ─── Why ThriveIndex Step ─────────────────────────────────────────────────────
+
+function WhyStep({ colors }: { colors: any }) {
+  return (
+    <View style={{ gap: 24 }}>
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontSize: 28, fontWeight: '800', color: colors.foreground }}>
+          Why ThriveIndex?
+        </Text>
+        <Text style={{ fontSize: 16, color: colors.muted, lineHeight: 24 }}>
+          Most habit trackers focus on one metric. We believe true wellbeing is multidimensional.
+        </Text>
+      </View>
+
+      <View style={{ gap: 12 }}>
+        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+          <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center' }}>
+            <IconSymbol name="brain.head.profile" size={20} color={colors.primary} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 15, fontWeight: '700', color: colors.foreground, marginBottom: 4 }}>
+              Science-Backed
+            </Text>
+            <Text style={{ fontSize: 14, color: colors.muted, lineHeight: 20 }}>
+              Built on peer-reviewed research from sleep, exercise, psychology, and wellbeing studies.
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+          <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center' }}>
+            <IconSymbol name="sparkles" size={20} color={colors.primary} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 15, fontWeight: '700', color: colors.foreground, marginBottom: 4 }}>
+              Holistic Scoring
+            </Text>
+            <Text style={{ fontSize: 14, color: colors.muted, lineHeight: 20 }}>
+              Your daily score reflects sleep, movement, sunlight, reflection, and habits—not just one metric.
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+          <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center' }}>
+            <IconSymbol name="chart.line.uptrend.xyaxis" size={20} color={colors.primary} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 15, fontWeight: '700', color: colors.foreground, marginBottom: 4 }}>
+              Behavioral Insights
+            </Text>
+            <Text style={{ fontSize: 14, color: colors.muted, lineHeight: 20 }}>
+              Discover what habits drive your best days. See correlations between sleep, exercise, and mood.
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
+          <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center' }}>
+            <IconSymbol name="leaf.fill" size={20} color={colors.primary} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 15, fontWeight: '700', color: colors.foreground, marginBottom: 4 }}>
+              Consistency Over Perfection
+            </Text>
+            <Text style={{ fontSize: 14, color: colors.muted, lineHeight: 20 }}>
+              Small daily actions compound. We celebrate progress, not perfection.
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+// ─── Sample Day Step ──────────────────────────────────────────────────────────
+
+function SampleDayStep({ colors }: { colors: any }) {
+  return (
+    <View style={{ gap: 24 }}>
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontSize: 28, fontWeight: '800', color: colors.foreground }}>
+          Here's a Sample Day
+        </Text>
+        <Text style={{ fontSize: 16, color: colors.muted, lineHeight: 24 }}>
+          This is what a completed day looks like in ThriveIndex.
+        </Text>
+      </View>
+
+      {/* Sample Score Card */}
+      <View style={{ backgroundColor: colors.surface, borderRadius: 16, padding: 20, borderWidth: 1, borderColor: colors.border }}>
+        <Text style={{ fontSize: 13, fontWeight: '600', color: colors.muted, marginBottom: 12 }}>
+          TODAY'S THRIVE SCORE
+        </Text>
+        <View style={{ alignItems: 'center', marginBottom: 20 }}>
+          <View style={{ width: 120, height: 120, borderRadius: 60, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 48, fontWeight: '800', color: '#fff' }}>78</Text>
+          </View>
+        </View>
+        <Text style={{ fontSize: 14, color: colors.muted, textAlign: 'center', marginBottom: 16 }}>
+          Great day! You're 12 points above your average.
+        </Text>
+
+        {/* Sample Metrics */}
+        <View style={{ gap: 12 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="moon.fill" size={18} color={colors.primary} />
+              <Text style={{ fontSize: 14, color: colors.foreground }}>Sleep</Text>
+            </View>
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>7.5 hrs ✓</Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="figure.walk" size={18} color={colors.primary} />
+              <Text style={{ fontSize: 14, color: colors.foreground }}>Steps</Text>
+            </View>
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>8,234 ✓</Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="flame.fill" size={18} color={colors.primary} />
+              <Text style={{ fontSize: 14, color: colors.foreground }}>Exercise</Text>
+            </View>
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>35 min ✓</Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="sun.max.fill" size={18} color={colors.primary} />
+              <Text style={{ fontSize: 14, color: colors.foreground }}>Sunlight</Text>
+            </View>
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>Yes ✓</Text>
+          </View>
+        </View>
+
+        {/* Reflections */}
+        <View style={{ marginTop: 16, paddingTop: 16, borderTopWidth: 1, borderTopColor: colors.border }}>
+          <Text style={{ fontSize: 13, fontWeight: '600', color: colors.muted, marginBottom: 8 }}>
+            EVENING REFLECTION
+          </Text>
+          <Text style={{ fontSize: 14, color: colors.foreground, lineHeight: 20, marginBottom: 8 }}>
+            <Text style={{ fontWeight: '600' }}>Gratitude:</Text> Grateful for a productive meeting and time with friends.
+          </Text>
+          <Text style={{ fontSize: 14, color: colors.foreground, lineHeight: 20 }}>
+            <Text style={{ fontWeight: '600' }}>Progress:</Text> Finished the project ahead of schedule 🎉
+          </Text>
+        </View>
+      </View>
+
+      <View style={{ backgroundColor: colors.primary + '10', borderRadius: 12, padding: 16, borderLeftWidth: 4, borderLeftColor: colors.primary }}>
+        <Text style={{ fontSize: 14, color: colors.foreground, lineHeight: 22 }}>
+          <Text style={{ fontWeight: '700' }}>Your job:</Text> Log your metrics and reflections each evening. We'll calculate your score and show you patterns over time.
+        </Text>
       </View>
     </View>
   );

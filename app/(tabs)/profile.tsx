@@ -367,11 +367,11 @@ export default function ProfileScreen() {
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 }}>
             <IconSymbol name="sparkles" size={22} color={colors.primary} />
             <Text style={{ fontSize: 17, fontWeight: '700', color: colors.foreground }}>
-              Affordable wellbeing infrastructure
+              Support Our Mission
             </Text>
           </View>
           <Text style={{ fontSize: 14, color: colors.muted, lineHeight: 22, marginBottom: 16 }}>
-            Unlock advanced insights, AI reflection summaries, personalized recommendations, and habit correlation analysis.
+            You're doing us a favor by upgrading. Your support funds a small team dedicated to building tools that make the world a better, happier place. Plus, unlock advanced insights, AI reflection summaries, personalized recommendations, and habit correlation analysis.
           </Text>
           <View style={{ gap: 8, marginBottom: 16 }}>
             {[

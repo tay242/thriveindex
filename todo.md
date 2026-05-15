@@ -59,5 +59,6 @@
 - [x] Add daily notification time picker to onboarding
 - [x] Add weekly notification day/time picker to onboarding
 - [x] Add notification settings to Profile screen (update daily/weekly times)
+- [x] Update subscription messaging to emphasize supporting the team
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

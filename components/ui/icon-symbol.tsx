@@ -8,23 +8,59 @@ import { OpaqueColorValue, type StyleProp, type TextStyle } from "react-native";
 type IconMapping = Record<SymbolViewProps["name"], ComponentProps<typeof MaterialIcons>["name"]>;
 type IconSymbolName = keyof typeof MAPPING;
 
-/**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
- */
 const MAPPING = {
+  // Navigation
   "house.fill": "home",
+  "calendar": "calendar-today",
+  "chart.bar.fill": "bar-chart",
+  "person.fill": "person",
+  // Actions
   "paperplane.fill": "send",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
+  "chevron.left": "chevron-left",
+  "chevron.down": "expand-more",
+  "chevron.up": "expand-less",
+  "xmark": "close",
+  "checkmark": "check",
+  "checkmark.circle.fill": "check-circle",
+  "circle": "radio-button-unchecked",
+  "plus": "add",
+  "minus": "remove",
+  "pencil": "edit",
+  "gear": "settings",
+  "arrow.right": "arrow-forward",
+  "arrow.left": "arrow-back",
+  // Health / Wellness
+  "moon.fill": "bedtime",
+  "figure.walk": "directions-walk",
+  "flame.fill": "local-fire-department",
+  "heart.fill": "favorite",
+  "sun.max.fill": "wb-sunny",
+  "bolt.fill": "bolt",
+  "brain.head.profile": "psychology",
+  "star.fill": "star",
+  "trophy.fill": "emoji-events",
+  "sparkles": "auto-awesome",
+  "leaf.fill": "eco",
+  "waveform.path.ecg": "monitor-heart",
+  // Data
+  "chart.line.uptrend.xyaxis": "trending-up",
+  "chart.pie.fill": "pie-chart",
+  "list.bullet": "list",
+  "clock.fill": "schedule",
+  "calendar.badge.clock": "event",
+  // Misc
+  "info.circle": "info",
+  "lock.fill": "lock",
+  "bell.fill": "notifications",
+  "tag.fill": "label",
+  "lightbulb.fill": "lightbulb",
+  "person.2.fill": "group",
+  "hand.raised.fill": "back-hand",
+  "globe": "language",
 } as IconMapping;
 
-/**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
- */
 export function IconSymbol({
   name,
   size = 24,

@@ -66,5 +66,8 @@
 - [x] Streak celebration animation (7-day, 30-day milestones with confetti)
 - [x] Weekly digest email toggle in Profile
 - [x] Personalized weekly email with summary, top habits, and insights
+- [x] Add Friends leaderboard section to Profile (opt-in, privacy-respecting)
+- [x] Add friend invite/add functionality with unique friend codes
+- [x] Display friends' streaks and weekly scores on leaderboard
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

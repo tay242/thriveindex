@@ -51,6 +51,14 @@ export interface CustomMetric {
   createdAt: string;
 }
 
+export interface Friend {
+  id: string; // Friend's unique ID
+  name: string;
+  streak: number;
+  weeklyScore: number;
+  lastUpdated: string; // ISO date when friend data was last synced
+}
+
 export interface UserProfile {
   onboardingComplete: boolean;
   name: string;
@@ -71,6 +79,9 @@ export interface UserProfile {
   referralCode: string; // Unique code for this user
   referralsCount: number; // Number of successful referrals
   referralRewardDays: number; // Bonus trial days earned from referrals
+  // Friends & Leaderboard
+  friendsList: Friend[];
+  friendsLeaderboardEnabled: boolean; // Opt-in for friends to see their scores
 }
 
 export type ProgressCategory =
@@ -117,6 +128,8 @@ export const DEFAULT_PROFILE: UserProfile = {
   referralCode: '',
   referralsCount: 0,
   referralRewardDays: 0,
+  friendsList: [],
+  friendsLeaderboardEnabled: true,
 };
 
 // ─── Score Calculation ────────────────────────────────────────────────────────

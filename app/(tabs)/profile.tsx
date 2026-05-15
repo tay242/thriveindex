@@ -518,6 +518,110 @@ export default function ProfileScreen() {
           </Pressable>
         </View>
 
+        {/* Friends Leaderboard */}
+        <Text style={s.sectionTitle}>Friends</Text>
+        <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          {profile.friendsList.length === 0 ? (
+            <View style={{ paddingHorizontal: 16, paddingVertical: 20, alignItems: 'center' }}>
+              <Text style={{ fontSize: 14, color: colors.muted, marginBottom: 12 }}>No friends yet</Text>
+              <Pressable
+                style={({ pressed }) => [{
+                  paddingHorizontal: 16,
+                  paddingVertical: 10,
+                  borderRadius: 8,
+                  backgroundColor: colors.primary + '20',
+                  borderWidth: 1,
+                  borderColor: colors.primary,
+                }, pressed && { opacity: 0.7 }]}
+                onPress={() => {
+                  Alert.prompt('Add Friend', 'Enter your friend\'s friend code:', [
+                    { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                    { text: 'Add', onPress: (code: string | undefined) => {
+                      if (code && code.trim()) {
+                        if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        Alert.alert('Friend Added', `Added friend with code: ${code}`);
+                      }
+                    }}
+                  ]);
+                }}
+              >
+                <Text style={{ fontSize: 14, color: colors.primary, fontWeight: '600' }}>Add Friend</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <>
+              {profile.friendsList.map((friend, idx) => (
+                <View key={friend.id}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 }}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ fontSize: 15, fontWeight: '600', color: colors.foreground }}>{friend.name}</Text>
+                      <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>Weekly: {friend.weeklyScore}</Text>
+                    </View>
+                    <View style={{ alignItems: 'flex-end' }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <Text style={{ fontSize: 16 }}>🔥</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '600', color: colors.warning }}>{friend.streak}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  {idx < profile.friendsList.length - 1 && (
+                    <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
+                  )}
+                </View>
+              ))}
+              <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
+              <Pressable
+                style={({ pressed }) => [{
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                  alignItems: 'center',
+                }, pressed && { opacity: 0.7 }]}
+                onPress={() => {
+                  Alert.prompt('Add Friend', 'Enter your friend\'s friend code:', [
+                    { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                    { text: 'Add', onPress: (code: string | undefined) => {
+                      if (code && code.trim()) {
+                        if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        Alert.alert('Friend Added', `Added friend with code: ${code}`);
+                      }
+                    }}
+                  ]);
+                }}
+              >
+                <Text style={{ fontSize: 14, color: colors.primary, fontWeight: '600' }}>+ Add Friend</Text>
+              </Pressable>
+            </>
+          )}
+          <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>Leaderboard Visibility</Text>
+              <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>Friends can see your scores</Text>
+            </View>
+            <Pressable
+              style={({ pressed }) => [{
+                width: 50,
+                height: 28,
+                borderRadius: 14,
+                backgroundColor: profile.friendsLeaderboardEnabled ? colors.primary : colors.border,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }, pressed && { opacity: 0.8 }]}
+              onPress={() => {
+                if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                updateProfile({ friendsLeaderboardEnabled: !profile.friendsLeaderboardEnabled });
+              }}
+            >
+              <View style={[{
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                backgroundColor: colors.background,
+              }, profile.friendsLeaderboardEnabled ? { marginLeft: 2 } : { marginRight: 2 }]} />
+            </Pressable>
+          </View>
+        </View>
+
         {/* App Info */}
         <Text style={s.sectionTitle}>About</Text>
         <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>

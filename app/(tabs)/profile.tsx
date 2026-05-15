@@ -210,50 +210,39 @@ export default function ProfileScreen() {
           })}
         </View>
 
-        {/* Science & Research */}
-        <Text style={s.sectionTitle}>The Science</Text>
-        <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border, padding: 0 }]}>
-          {Object.entries(CORE_METRICS_SCIENCE).map(([key, metric], index) => (
-            <View key={key}>
-              <View style={{ paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'flex-start', gap: 12 }}>
-                <IconSymbol name={metric.icon as any} size={20} color={colors.primary} />
-                <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>{metric.title}</Text>
-                  <Text style={{ fontSize: 12, color: colors.muted, marginTop: 4, lineHeight: 16 }}>{metric.description}</Text>
-                </View>
-              </View>
-              {index < Object.keys(CORE_METRICS_SCIENCE).length - 1 && (
-                <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
-              )}
-            </View>
-          ))}
-        </View>
-
-        {/* Extra Metrics */}
-        <Text style={s.sectionTitle}>Extra Metrics</Text>
-        <Pressable
-          style={({ pressed }) => [
-            s.card,
-            { backgroundColor: colors.surface, borderColor: colors.border },
-            pressed && { opacity: 0.7 },
-          ]}
-          onPress={() => router.push('/(tabs)/extra-metrics-settings')}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 16, paddingHorizontal: 16 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
-              <View style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: colors.primary + '20', alignItems: 'center', justifyContent: 'center' }}>
-                <IconSymbol name="plus.circle.fill" size={20} color={colors.primary} />
-              </View>
+        {/* The Science & Extra Metrics Cards */}
+        <View style={{ flexDirection: 'row', gap: 12, marginBottom: 20 }}>
+          <Pressable
+            style={({ pressed }) => [
+              { flex: 1, backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 12, padding: 12 },
+              pressed && { opacity: 0.7 },
+            ]}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="book.fill" size={20} color={colors.primary} />
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 14, fontWeight: '600', color: colors.foreground }}>Customize Your Metrics</Text>
-                <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>
-                  {profile.enabledExtraMetrics.length} preset{profile.enabledExtraMetrics.length !== 1 ? 's' : ''} enabled • {profile.customMetrics.length} custom
-                </Text>
+                <Text style={{ fontSize: 13, fontWeight: '600', color: colors.foreground }}>The Science</Text>
+                <Text style={{ fontSize: 11, color: colors.muted, marginTop: 2 }}>Research</Text>
               </View>
             </View>
-            <IconSymbol name="chevron.right" size={18} color={colors.muted} />
-          </View>
-        </Pressable>
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              { flex: 1, backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 12, padding: 12 },
+              pressed && { opacity: 0.7 },
+            ]}
+            onPress={() => router.push('/(tabs)/extra-metrics-settings')}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="plus.circle.fill" size={20} color={colors.primary} />
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 13, fontWeight: '600', color: colors.foreground }}>Extra Metrics</Text>
+                <Text style={{ fontSize: 11, color: colors.muted, marginTop: 2 }}>{profile.enabledExtraMetrics.length} enabled</Text>
+              </View>
+            </View>
+          </Pressable>
+        </View>
 
         {/* Thresholds */}
         <Text style={s.sectionTitle}>Targets & Thresholds</Text>

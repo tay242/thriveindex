@@ -288,6 +288,30 @@ export default function ProfileScreen() {
           })}
         </View>
 
+        {/* Notification Settings */}
+        <Text style={s.sectionTitle}>Notification Settings</Text>
+        <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <NotificationTimePicker
+            label="Daily Reminder"
+            icon="bell.fill"
+            time={profile.dailyNotificationTime}
+            onTimeChange={(time) => updateProfile({ dailyNotificationTime: time })}
+            colors={colors}
+            description="Evening reflection prompt"
+          />
+          <View style={{ height: 0.5, backgroundColor: colors.border, marginHorizontal: 16 }} />
+          <NotificationDayTimePicker
+            label="Weekly Reminder"
+            icon="calendar.badge.fill"
+            day={profile.weeklyNotificationDay}
+            time={profile.weeklyNotificationTime}
+            onDayChange={(day) => updateProfile({ weeklyNotificationDay: day })}
+            onTimeChange={(time) => updateProfile({ weeklyNotificationTime: time })}
+            colors={colors}
+            description="Weekly check-in prompt"
+          />
+        </View>
+
         {/* Thresholds */}
         <Text style={s.sectionTitle}>Targets & Thresholds</Text>
         <View style={[s.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -405,6 +429,245 @@ export default function ProfileScreen() {
         <View style={{ height: 32 }} />
       </ScrollView>
     </ScreenContainer>
+  );
+}
+
+// ─── Notification Time Picker ────────────────────────────────────────────────
+
+function NotificationTimePicker({
+  label,
+  icon,
+  time,
+  onTimeChange,
+  colors,
+  description,
+}: {
+  label: string;
+  icon: string;
+  time: string;
+  onTimeChange: (time: string) => void;
+  colors: any;
+  description: string;
+}) {
+  const [hour, minute] = time.split(':').map(Number);
+  const [showPicker, setShowPicker] = useState(false);
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const minutes = [0, 15, 30, 45];
+
+  return (
+    <View style={{ paddingHorizontal: 16, paddingVertical: 14 }}>
+      <Pressable
+        style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+        onPress={() => setShowPicker(!showPicker)}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
+            <IconSymbol name={icon as any} size={18} color={colors.primary} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, fontWeight: '500', color: colors.foreground }}>{label}</Text>
+              <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>{description}</Text>
+            </View>
+          </View>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: 16, fontWeight: '700', color: colors.primary }}>
+              {String(hour).padStart(2, '0')}:{String(minute).padStart(2, '0')}
+            </Text>
+            <IconSymbol name={showPicker ? 'chevron.up' : 'chevron.down'} size={14} color={colors.muted} />
+          </View>
+        </View>
+      </Pressable>
+
+      {showPicker && (
+        <View style={{ marginTop: 12, gap: 12 }}>
+          <View>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Hour</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+              {hours.map((h) => (
+                <Pressable
+                  key={h}
+                  style={({ pressed }) => [{
+                    paddingHorizontal: 12,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    backgroundColor: h === hour ? colors.primary : colors.border,
+                    minWidth: 50,
+                    alignItems: 'center',
+                  }, pressed && { opacity: 0.8 }]}
+                  onPress={() => {
+                    onTimeChange(`${String(h).padStart(2, '0')}:${String(minute).padStart(2, '0')}`);
+                    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                >
+                  <Text style={{ fontSize: 14, fontWeight: '600', color: h === hour ? '#fff' : colors.foreground }}>
+                    {String(h).padStart(2, '0')}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+          <View>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Minute</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+              {minutes.map((m) => (
+                <Pressable
+                  key={m}
+                  style={({ pressed }) => [{
+                    paddingHorizontal: 12,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    backgroundColor: m === minute ? colors.primary : colors.border,
+                    minWidth: 50,
+                    alignItems: 'center',
+                  }, pressed && { opacity: 0.8 }]}
+                  onPress={() => {
+                    onTimeChange(`${String(hour).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+                    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                >
+                  <Text style={{ fontSize: 14, fontWeight: '600', color: m === minute ? '#fff' : colors.foreground }}>
+                    {String(m).padStart(2, '0')}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
+
+// ─── Notification Day/Time Picker ─────────────────────────────────────────────
+
+function NotificationDayTimePicker({
+  label,
+  icon,
+  day,
+  time,
+  onDayChange,
+  onTimeChange,
+  colors,
+  description,
+}: {
+  label: string;
+  icon: string;
+  day: number;
+  time: string;
+  onDayChange: (day: number) => void;
+  onTimeChange: (time: string) => void;
+  colors: any;
+  description: string;
+}) {
+  const [hour, minute] = time.split(':').map(Number);
+  const [showPicker, setShowPicker] = useState(false);
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const minutes = [0, 15, 30, 45];
+
+  return (
+    <View style={{ paddingHorizontal: 16, paddingVertical: 14 }}>
+      <Pressable
+        style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+        onPress={() => setShowPicker(!showPicker)}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
+            <IconSymbol name={icon as any} size={18} color={colors.primary} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, fontWeight: '500', color: colors.foreground }}>{label}</Text>
+              <Text style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>{description}</Text>
+            </View>
+          </View>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.primary }}>
+              {days[day]} {String(hour).padStart(2, '0')}:{String(minute).padStart(2, '0')}
+            </Text>
+            <IconSymbol name={showPicker ? 'chevron.up' : 'chevron.down'} size={14} color={colors.muted} />
+          </View>
+        </View>
+      </Pressable>
+
+      {showPicker && (
+        <View style={{ marginTop: 12, gap: 12 }}>
+          <View>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Day</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+              {days.map((d, i) => (
+                <Pressable
+                  key={i}
+                  style={({ pressed }) => [{
+                    paddingHorizontal: 12,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    backgroundColor: i === day ? colors.primary : colors.border,
+                  }, pressed && { opacity: 0.8 }]}
+                  onPress={() => {
+                    onDayChange(i);
+                    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                >
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: i === day ? '#fff' : colors.foreground }}>
+                    {d.slice(0, 3)}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+          <View>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Hour</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+              {hours.map((h) => (
+                <Pressable
+                  key={h}
+                  style={({ pressed }) => [{
+                    paddingHorizontal: 12,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    backgroundColor: h === hour ? colors.primary : colors.border,
+                    minWidth: 50,
+                    alignItems: 'center',
+                  }, pressed && { opacity: 0.8 }]}
+                  onPress={() => {
+                    onTimeChange(`${String(h).padStart(2, '0')}:${String(minute).padStart(2, '0')}`);
+                    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                >
+                  <Text style={{ fontSize: 14, fontWeight: '600', color: h === hour ? '#fff' : colors.foreground }}>
+                    {String(h).padStart(2, '0')}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+          <View>
+            <Text style={{ fontSize: 12, color: colors.muted, marginBottom: 8, fontWeight: '600' }}>Minute</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+              {minutes.map((m) => (
+                <Pressable
+                  key={m}
+                  style={({ pressed }) => [{
+                    paddingHorizontal: 12,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    backgroundColor: m === minute ? colors.primary : colors.border,
+                    minWidth: 50,
+                    alignItems: 'center',
+                  }, pressed && { opacity: 0.8 }]}
+                  onPress={() => {
+                    onTimeChange(`${String(hour).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+                    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                >
+                  <Text style={{ fontSize: 14, fontWeight: '600', color: m === minute ? '#fff' : colors.foreground }}>
+                    {String(m).padStart(2, '0')}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      )}
+    </View>
   );
 }
 

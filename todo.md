@@ -58,5 +58,6 @@
 - [x] Add toggle switches for extra metrics in Profile section
 - [x] Add daily notification time picker to onboarding
 - [x] Add weekly notification day/time picker to onboarding
+- [x] Add notification settings to Profile screen (update daily/weekly times)
 - [ ] Extra metrics tracking on Today screen
 - [ ] Extra metrics included in daily score calculation

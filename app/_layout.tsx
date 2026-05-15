@@ -35,8 +35,17 @@ function RootNavigator() {
   );
 }
 
-export default function RootLayout() {
+function RootLayoutInner() {
   const colorScheme = useColorScheme();
+  return (
+    <NavThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <RootNavigator />
+      <StatusBar style="auto" />
+    </NavThemeProvider>
+  );
+}
+
+export default function RootLayout() {
   const [loaded] = useFonts({});
 
   useEffect(() => {
@@ -51,10 +60,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
         <AppProvider>
-          <NavThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <RootNavigator />
-            <StatusBar style="auto" />
-          </NavThemeProvider>
+          <RootLayoutInner />
         </AppProvider>
       </ThemeProvider>
     </GestureHandlerRootView>

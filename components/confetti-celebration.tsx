@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { View, Animated, Easing } from 'react-native';
 
 interface ConfettiPieceProps {
@@ -8,13 +8,17 @@ interface ConfettiPieceProps {
 }
 
 function ConfettiPiece({ delay, duration, colors }: ConfettiPieceProps) {
-  const animatedValue = new Animated.Value(0);
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  const randomX = Math.random() * 200 - 100;
-  const randomRotation = Math.random() * 720;
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  
+  // Memoize random values so they don't change on re-render
+  const { color, randomX, randomRotation } = useMemo(() => ({
+    color: colors[Math.floor(Math.random() * colors.length)],
+    randomX: Math.random() * 200 - 100,
+    randomRotation: Math.random() * 720,
+  }), [colors]);
 
   useEffect(() => {
-    Animated.sequence([
+    const animation = Animated.sequence([
       Animated.delay(delay),
       Animated.timing(animatedValue, {
         toValue: 1,
@@ -22,8 +26,14 @@ function ConfettiPiece({ delay, duration, colors }: ConfettiPieceProps) {
         easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
-    ]).start();
-  }, []);
+    ]);
+    
+    animation.start();
+    
+    return () => {
+      animation.stop();
+    };
+  }, [delay, duration, animatedValue]);
 
   const translateY = animatedValue.interpolate({
     inputRange: [0, 1],
@@ -75,6 +85,7 @@ interface ConfettiCelebrationProps {
  */
 export function ConfettiCelebration({ isVisible, onComplete }: ConfettiCelebrationProps) {
   const [pieces, setPieces] = useState<number[]>([]);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const colors = ['#1A6B5A', '#3ECFA0', '#22C55E', '#F59E0B', '#EF4444', '#3B82F6'];
   const duration = 2500;
@@ -85,14 +96,23 @@ export function ConfettiCelebration({ isVisible, onComplete }: ConfettiCelebrati
       setPieces(Array.from({ length: 30 }, (_, i) => i));
 
       // Call onComplete after animation finishes
-      const timer = setTimeout(() => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      
+      timerRef.current = setTimeout(() => {
         setPieces([]);
         onComplete?.();
       }, duration + 500);
 
-      return () => clearTimeout(timer);
+      return () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      };
     }
-  }, [isVisible, onComplete]);
+  }, [isVisible, onComplete, duration]);
 
   if (!isVisible && pieces.length === 0) {
     return null;

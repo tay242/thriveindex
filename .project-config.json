@@ -7,22 +7,26 @@
   ],
   "dev_command": "pnpm run dev",
   "env_vars": {
-    "DATABASE_URL": "mysql://3ExbsU5gLTY7Wra.root:TCb0dkj4OW2Nlg7D7MN1@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/FwgGeRMdZPSEprSrdYMS6j?ssl={\"rejectUnauthorized\":true}"
+    "DATABASE_URL": "mysql://3ExbsU5gLTY7Wra.root:TCb0dkj4OW2Nlg7D7MN1@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/FwgGeRMdZPSEprSrdYMS6j?ssl={\"rejectUnauthorized\":true}",
+    "DRIZZLE_DATABASE_URL": "mysql://3ExbsU5gLTY7Wra.root:TCb0dkj4OW2Nlg7D7MN1@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/FwgGeRMdZPSEprSrdYMS6j?ssl={\"rejectUnauthorized\":true}"
   },
   "experiments": [
     "no_db_push"
   ],
   "git_remote": {
     "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663662257214/FwgGeRMdZPSEprSrdYMS6j",
-    "access_key_id": "ASIAZV3A2ECZEXNUJ26L",
-    "secret_access_key": "bQwreIdDGlyA/3gTCmDxUxsc3yTgJ8dYjfdQQpco",
-    "session_token": "IQoJb3JpZ2luX2VjELr//////////wEaCXVzLWVhc3QtMSJHMEUCIHeLmgBnWOCWnJVjz6RXmhVoZddIApPuT3EBIVY5z3LOAiEA3dUUjD32IzjGwEtuRffWNXHSV3ohLIYkt3mxhKDs6Xsq/wMIgv//////////ARAEGgw2NjUzODYwOTg4NjYiDEo9EgvajLjMgKdvvSrTA9L+BmRtRsGVNOBGIFybdO6zIxOOXdh7D02pqQflEM7y3QB6Ei65pmwan1ge4IEUTAV3UHgas6diUSrHKCQjYxEgWCUXPMOPt6EsrP8x9XWu73Sq/z1DGVTG7p6FbfnP8skeymGvuKKpg9eJP/PCYcRCf2z2vcUcVtngP4hdhAAoBixC2wibeYGmQgr118YqYLkbjHaoHMSc+JKti+iGJgnVFmooRdMNHyMyeoqppZ5wzHQYQvHGbZKqeErO4+nuSKqtQl03oEvHgIAM277RZZRW2V6kF1ik75Q2SCRkZzkFaZtQZS3xxUJKOUi46Pf7XA7dDk0zMMHsPtNIf84pgKQzugR6lxUu6Xqgx2UZG3aWrBhwK7x6yIIeWVXf0cYxMCgdCZQANHaIYblp5D3dqZkjfpy0Fa6Y2Z5q0hFx2CoOOJBL3nE3ZbTSSh0n24LA9x7+IXxz1KgwYWviRgKcuor7M1MUup8ruOfnAkQaa9YDuRQF3WkNCi6QVzrh1N3kKU0umeWsx7vBasuJldzxOEaj8Ji658Z4fIyQQTgtlRhrqjyBhqgtUszW822ZfZR87I40HlfaGwIgRUognDvzhsZbsrOrLD6tlveIQPEkHOC7mGXJMPaGn9AGOp0Br0eVDvkOinvamnbOMqQjRLXATnPvNgp1XuZZbH2B45a+ez91DOwV+uEvFCZXu9x9QAVeD1SGJlYU8GHfd+zntm7YxlPDjZI2FR7ezghbn+CvZOImxz8/bMm0GG3U11cxOofyxaBAZBoNp4pClJRPfoLqNR6SMc5bq0YejJ0nhnStwmZnV716psozcDv1gQ2Hu4GXuJLWFuKm8G39iA==",
-    "expiration": "2026-05-16T13:08:06.000Z"
+    "access_key_id": "ASIAZV3A2ECZOZILJE6I",
+    "secret_access_key": "pildrqXLRotBvRAxfRm1DREzUf8b6Ei0SKjbU8US",
+    "session_token": "IQoJb3JpZ2luX2VjEFsaCXVzLWVhc3QtMSJHMEUCIQDew/NkfV9nitggM3t4jKsG1dxFtoJSv+uvR42/0Q51GwIgdtYNp7I2J6m9Xq188oWtFWSkQLzEFFCvTRQeqSb9yU4q9gMIJBAEGgw2NjUzODYwOTg4NjYiDNVzfFu0ae12EZBStirTAzX51OM4tQC4NusIz9Prl3aTlZcXMpF2dIE8N0npsLRlBAguEI3xIzG1yHYVhQ3uf9FtJRq9+rRz3wSh4PJRee5nYXjxdsPZm4AlPb6++nlIhOsdbRtz9JUXfXfXsvHKrnHeWOzPS9YQgXtg8nI5iM+lUrd6N0KyWNjDn9InLD30Q9pC2aexpWoCk/EemPCIAbeKeAkD2S7i5rrRCFYKpRoIjict98O7aYq/0SLEOPaTKY1RQXxKA46lnlkqdtDBwPnJmuA90T6OyQCKZHEkihzxt/YpdP9u5rB020IHLcjJgPCGRHxNtGIZsBwgc+PQtbWaQovTiBfUuZMMjKuXIYM70JNVnbQgkYtYwULfXIOJqD/tyRRUuuyMHuuCvBLLbow26M8H87IlCqbDFBKD9sGWI6aku2fpoCq8taN/ASz418g8xKOR6sWr8DeAxYyVQC9H7tB4azWwxhva4h50xoDZWg/tV9dcDE/z/XTsuJhVsXeNHVwbAR/V61B93gzq4m6HU+dBeI8gQJOFt7RS64dmhvOXxl5yQbBwle1L4p4nP3gPTmgZIOW7fUaq/NgmHeKw+uQ9KcFYmbsKTY3fy2cf0AEn2PiVK3B35e6ppriQSr+pMMG/wtAGOp0BbQNJjuhdaJ9uRkvXW7DtyoLhoFZe3Ir8iCG6+YQBffrikKL0hE3+1qkQlsCeFLX5cg4+Fgwv8CHbiv3K1s1OsVtwFWo7JiQlyMFZxt66ZPSQpBm/VheSlgCuNRJQK/xIkLXPUs0Kxk71UB36vduJuEwqUKSpksaFMxrdcjMMBdxQUwhJP3SxgDTGz64bTfr6oyCjaCobY67+GzL+Tg==",
+    "expiration": "2026-05-23T06:26:09.000Z"
   },
   "name": "thriveindex",
   "path": "/home/ubuntu/thriveindex",
   "port": 3000,
   "secrets": {
+    "APPLE_ID": "taylor.stevens24@gmail.com",
+    "APPLE_ID_PASSWORD": "Lindsey1!",
+    "APPLE_TEAM_ID": "FT7HU6A66X",
     "BUILT_IN_FORGE_API_KEY": "P5t8jNAJwXAg7CM8UKB6gV",
     "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
     "EXPO_APP_QR_URL": "exps://8081-icfos0bzy38wwyrzrfq8a-b6f579ad.us2.manus.computer",
@@ -40,7 +44,7 @@
     "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
     "VITE_ANALYTICS_WEBSITE_ID": "3de3b13d-fcad-411f-b38a-84e86e48761f",
     "VITE_APP_ID": "FwgGeRMdZPSEprSrdYMS6j",
-    "VITE_APP_LOGO": "",
+    "VITE_APP_LOGO": "https://d2xsxph8kpxj0f.cloudfront.net/310519663662257214/FwgGeRMdZPSEprSrdYMS6j/thriveindex-icon-WcomjMSTvS3AwwoDrLwoxt.png",
     "VITE_APP_TITLE": "ThriveIndex",
     "VITE_FRONTEND_FORGE_API_KEY": "WmPtntK6rPrCfoAWQiPL5o",
     "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",

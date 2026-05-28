@@ -192,7 +192,7 @@ function WelcomeStep({ colors }: { colors: any }) {
       <Text style={{ fontSize: 36, fontWeight: '800', color: colors.foreground, textAlign: 'center', marginBottom: 12, letterSpacing: -0.5 }}>
         ThriveIndex
       </Text>
-      <Text style={{ fontSize: 17, color: colors.foreground, textAlign: 'center', lineHeight: 26, paddingHorizontal: 12, fontWeight: '500', opacity: 0.85 }}>
+      <Text style={{ fontSize: 17, color: '#111827', textAlign: 'center', lineHeight: 26, paddingHorizontal: 12, fontWeight: '500' }}>
         A scientifically grounded operating system for a better life.
       </Text>
       <View style={{ marginTop: 56, gap: 18, width: '100%', paddingHorizontal: 8 }}>
